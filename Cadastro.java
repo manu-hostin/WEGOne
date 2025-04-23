@@ -11,9 +11,6 @@ public class Cadastro {
             this.titulo = titulo;
             this.tipo = tipo;
             this.conteudo = conteudo;
-        
-    
-
 
         Scanner scanner = new Scanner(System.in);
         int idioma = 0;
