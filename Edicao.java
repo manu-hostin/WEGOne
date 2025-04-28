@@ -14,7 +14,7 @@ public class Edicao {
 			int buscaEdicao;
 
 
-			titulos[0] = "Motor Elétrico";
+			titulos[0] = "Motor Eletrico";
 			tipos[0] = "Manual de Operação";
 			conteudosPortugues[0] = "Conteúdo em português do motor";
 			conteudosIngles[0] = "Motor content in English";
