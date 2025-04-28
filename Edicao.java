@@ -13,6 +13,7 @@ public class Edicao {
 			int respostaMenu = 3;
 			int buscaEdicao;
 
+
 			titulos[0] = "Motor Elétrico";
 			tipos[0] = "Manual de Operação";
 			conteudosPortugues[0] = "Conteúdo em português do motor";
