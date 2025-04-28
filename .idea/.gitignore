@@ -1,0 +1,59 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Editor-based HTTP Client requests
+/httpRequests/
+# Environment-dependent path to Maven home directory
+/mavenHomeManager.xml
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+
+# Compilação Java
+*.class
+
+# Diretórios de build
+/bin/
+/build/
+/target/
+
+# Configurações de IDEs
+# Eclipse
+*.classpath
+*.project
+*.settings/
+
+# IntelliJ IDEA
+*.iml
+.idea/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# Arquivos temporários do sistema
+*.tmp
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Arquivos de pacotes (caso use Maven/Gradle)
+# Maven
+.mvn/
+# Gradle
+.gradle/
+build/
+
+# Arquivos de cache
+out/
+
