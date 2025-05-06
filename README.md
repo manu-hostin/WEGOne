@@ -1,10 +1,10 @@
 WEGOne - Sistema de Cadastro e Consulta de Orientações WEG.
 
-💡*Objetivo*
+💡##Objetivo
 	
-    O WEGOne é o sistema de Cadastro e Consulta de Orientações WEG desenvolvido como projeto final da unidade curricular de Lógica de programação em parceria com as demais UCs Metodologias Ágeis e Versionamento, Inglês e Banco de Dados.
+O WEGOne é o sistema de Cadastro e Consulta de Orientações WEG desenvolvido como projeto final da unidade curricular de Lógica de programação em parceria com as demais UCs Metodologias Ágeis e Versionamento, Inglês e Banco de Dados.
 
-🛠️ *Funcionalidades*
+🛠️ ##Funcionalidades
 
 O sistema contém as seguinte funcionalidades: 
 
@@ -20,7 +20,7 @@ O sistema contém as seguinte funcionalidades:
 
 - Logout: O sistema oferece uma opção para o usuário encerrar a sessão.
 
-📂 *Tipos de Orientações*
+📂 ##Tipos de Orientações
 
 O sistema suporta os seguintes tipos de orientações:
 1. Manual de operação;
@@ -29,11 +29,13 @@ O sistema suporta os seguintes tipos de orientações:
 4. Teste e diagnóstico;
 5. Manual de conduta e operações setoriais.
 
-⚙️ *Especificações técnicas*
+⚙️ ##Especificações técnicas
 
-Linguagem: Java SE 22.
-IDE: Sugerimos a utilização do Eclipse, VS Code ou IntelliJ.
-Estrutura dos dados: Arrays Unidimensionais.
-Estrutura de Controle: If-else, do-while e for.
+| Categoria              | Detalhes                                      |
+|------------------------|-----------------------------------------------|
+| 💻 Linguagem           | Java SE 22                                    |
+| 🧠 Estrutura de Dados  | Arrays Unidimensionais                        |
+| 🔁 Estruturas de Controle | `if-else`, `do-while`, `for`              |
+| 🛠️ IDEs Sugeridas      | Eclipse, VS Code, IntelliJ                    |
 
 *Todos os requisitos e funcionalidades implementadas neste sistema partiram das restrições impostas pela disciplina de Lógica de Programação. Durante o desenvolvimento, foi necessário utilizar exclusivamente as estruturas de controle e funções abordadas nas aulas, conforme determinado pelo plano de ensino do curso.*
