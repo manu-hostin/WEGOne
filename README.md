@@ -1,10 +1,10 @@
 **WEGOne - Sistema de Cadastro e Consulta de Orientações WEG.**
 
-💡**##Objetivo**
+💡 __##Objetivo__
 	
 O WEGOne é o sistema de Cadastro e Consulta de Orientações WEG desenvolvido como projeto final da unidade curricular de Lógica de programação em parceria com as demais UCs Metodologias Ágeis e Versionamento, Inglês e Banco de Dados.
 
-🛠️ **##Funcionalidades**
+🛠️ __##Funcionalidades__
 
 O sistema contém as seguinte funcionalidades: 
 
@@ -20,7 +20,7 @@ O sistema contém as seguinte funcionalidades:
 
 - Logout: O sistema oferece uma opção para o usuário encerrar a sessão.
 
-📂 **##Tipos de Orientações**
+📂 __##Tipos de Orientações__
 
 O sistema suporta os seguintes tipos de orientações:
 1. Manual de operação;
@@ -29,7 +29,7 @@ O sistema suporta os seguintes tipos de orientações:
 4. Teste e diagnóstico;
 5. Manual de conduta e operações setoriais.
 
-⚙️ **##Especificações técnicas**
+⚙️ __##Especificações técnicas__
 
 | Categoria              | Detalhes                                      |
 |------------------------|-----------------------------------------------|
