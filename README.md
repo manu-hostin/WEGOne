@@ -116,10 +116,10 @@
         <td>Eclipse, VS Code, IntelliJ</td>
       </tr>
     </table>
-
-    <p>
+ <p>
       Todos os requisitos e funcionalidades implementadas neste sistema partiram das restrições impostas pela disciplina de Lógica de Programação. Durante o desenvolvimento, foi necessário utilizar exclusivamente as estruturas de controle e funções abordadas nas aulas, conforme determinado pelo plano de ensino do curso.
   </p>
+   
   </div>
 
 </body>
