@@ -154,7 +154,7 @@ public class Main {
 		System.out.println("1- Português;");
 		System.out.println("2- English;");
 		System.out.println("3- Deutsch");
-		System.out.println(">");
+		System.out.print(">");
 		int idioma = leia.nextInt();
 
 		if (idioma == 1) {
@@ -169,7 +169,7 @@ public class Main {
 				System.out.println("4. Excluir;");
 				System.out.println("5. Sair.");
 				System.out.println("Oque você deseja acessar?");
-				System.out.println("> ");
+				System.out.print("> ");
 				opcaoMenu = leia.nextInt();
 				leia.nextLine();
 
@@ -187,11 +187,13 @@ public class Main {
 					System.out.println("3- Manutenção e reparos;");
 					System.out.println("4- Testes e Diagnósticos;");
 					System.out.println("5- Manual de conduta e Operações Setoriais.");
-					System.out.println("> ");
+					System.out.print("> ");
 					tipo = leia.nextInt();
 					tipoOrientacaoPt[posicaoAtual] = tiposPt[tipo - 1];
 					leia.nextLine();
 					System.out.println("Digite o conteúdo da orientação:");
+					System.out.print("> ");
+
 					conteudoPt[posicaoAtual] = leia.nextLine();
 					System.out.println("\nCadastro realizado com sucesso!");
 					System.out.println("Título: " + titulosPt[posicaoAtual]);
@@ -205,12 +207,13 @@ public class Main {
 					System.out.println("Como você vai querer pesquisar?");
 					System.out.println("1- Título;");
 					System.out.println("2- Código.");
-					System.out.println(">");
+					System.out.print(">");
 					tipoPesquisa = leia.nextInt();
 					leia.nextLine();
 
 					if (tipoPesquisa == 1) {
 						System.out.println("Digite o título que você deseja pesquisar:");
+						System.out.print("> ");
 						pesquisa = leia.nextLine();
 
 						for (int i = 0; i < 15; i++) {
@@ -230,6 +233,7 @@ public class Main {
 						}
 					} else if (tipoPesquisa == 2) {
 						System.out.println("Digite o código que você deseja pesquisar:");
+						System.out.print("> ");
 						pesquisaCod = leia.nextInt();
 
 						for (int i = 0; i < 15; i++) {
@@ -372,6 +376,7 @@ public class Main {
 				} else if (opcaoMenu == 4) {
 					System.out.println("=== Excluir Orientação ===");
 					System.out.println("Digite o título que deseja excluir:");
+					System.out.print("> ");
 					exclusao = leia.nextLine();
 
 					for (int i = 0; i < 15; i++) {
@@ -380,6 +385,7 @@ public class Main {
 								System.out.println("Tem certeza que deseja excluir esta orientação?");
 								System.out.println("1- Sim");
 								System.out.println("2- Não");
+								System.out.print("> ");
 								respostaExclusao = leia.nextInt();
 
 								if (respostaExclusao == 1) {
@@ -422,7 +428,7 @@ public class Main {
 				System.out.println("4. Delete;");
 				System.out.println("5. Exit.");
 				System.out.println("What would you like to access?");
-				System.out.println("> ");
+				System.out.print("> ");
 				opcaoMenu = leia.nextInt();
 				leia.nextLine();
 
@@ -440,11 +446,12 @@ public class Main {
 					System.out.println("3- Maintenance and Repairs;");
 					System.out.println("4- Tests and Diagnostics;");
 					System.out.println("5- Conduct Manual and Sectorial Operations.");
-					System.out.println("> ");
+					System.out.print("> ");
 					tipo = leia.nextInt();
 					tipoOrientacaoEn[posicaoAtual] = tiposEn[tipo - 1];
 					leia.nextLine();
 					System.out.println("Enter the content of the guidance:");
+					System.out.print("> ");
 					conteudoEn[posicaoAtual] = leia.nextLine();
 					System.out.println("\nRegistration successful!");
 					System.out.println("Title:" + titulosEn[posicaoAtual]);
@@ -458,12 +465,13 @@ public class Main {
 					System.out.println("How would you like to search?");
 					System.out.println("1- Title;");
 					System.out.println("2- Code.");
-					System.out.println(">");
+					System.out.print(">");
 					tipoPesquisa = leia.nextInt();
 					leia.nextLine();
 
 					if (tipoPesquisa == 1) {
 						System.out.println("Enter the title you want to search for:");
+						System.out.print("> ");
 						pesquisa = leia.nextLine();
 
 						for (int i = 0; i < 15; i++) {
@@ -483,6 +491,7 @@ public class Main {
 						}
 					} else if (tipoPesquisa == 2) {
 						System.out.println("Enter the code you want to search for:");
+						System.out.print("> ");
 						pesquisaCod = leia.nextInt();
 
 						for (int i = 0; i < 15; i++) {
@@ -624,6 +633,7 @@ public class Main {
 				} else if (opcaoMenu == 4) {
 					System.out.println("=== Delete Guidance ===");
 					System.out.println("Enter the title you want to delete:");
+					System.out.print("> ");
 					exclusao = leia.nextLine();
 
 					for (int i = 0; i < 15; i++) {
@@ -632,6 +642,7 @@ public class Main {
 								System.out.println("Are you sure you want to delete this guidance?");
 								System.out.println("1- Yes");
 								System.out.println("2- No");
+								System.out.print("> ");
 								respostaExclusao = leia.nextInt();
 
 								if (respostaExclusao == 1) {
@@ -674,7 +685,7 @@ public class Main {
 				System.out.println("4. Löschen;");
 				System.out.println("5. Beenden.");
 				System.out.println("Was möchten Sie zugreifen?");
-				System.out.println("> ");
+				System.out.print("> ");
 				opcaoMenu = leia.nextInt();
 				leia.nextLine();
 
@@ -683,8 +694,10 @@ public class Main {
 
 					System.out.println("=== Neue Anleitung Registrierung ===");
 					System.out.println("Geben Sie den Titel der Anleitung ein:");
+					System.out.print("> ");
 					titulosDe[posicaoAtual] = leia.nextLine();
 					System.out.println("Geben Sie den Produktcode ein:");
+					System.out.print("> ");
 					codigo[posicaoAtual] = leia.nextInt();
 					System.out.println("Wählen Sie den Typ der Anleitung:");
 					System.out.println("1- Betriebsanleitung;");
@@ -692,11 +705,12 @@ public class Main {
 					System.out.println("3- Wartung und Reparaturen;");
 					System.out.println("4- Tests und Diagnosen;");
 					System.out.println("5- Verhaltenshandbuch und Sektorielle Operationen.");
-					System.out.println("> ");
+					System.out.print("> ");
 					tipo = leia.nextInt();
 					tipoOrientacaoDe[posicaoAtual] = tiposDe[tipo - 1];
 					leia.nextLine();
 					System.out.println("Geben Sie den Inhalt der Anleitung ein:");
+					System.out.print("> ");
 					conteudoDe[posicaoAtual] = leia.nextLine();
 					System.out.println("\nRegistrierung erfolgreich!");
 					System.out.println("Titel: " + titulosDe[posicaoAtual]);
@@ -710,12 +724,13 @@ public class Main {
 					System.out.println("Wie möchten Sie suchen?");
 					System.out.println("1- Titel;");
 					System.out.println("2- Code.");
-					System.out.println(">");
+					System.out.print(">");
 					tipoPesquisa = leia.nextInt();
 					leia.nextLine();
 
 					if (tipoPesquisa == 1) {
 						System.out.println("Geben Sie den Titel ein, nach dem Sie suchen möchten:");
+						System.out.print("> ");
 						pesquisa = leia.nextLine();
 
 						for (int i = 0; i < 15; i++) {
@@ -735,6 +750,7 @@ public class Main {
 						}
 					} else if (tipoPesquisa == 2) {
 						System.out.println("Geben Sie den Code ein, nach dem Sie suchen möchten:");
+						System.out.print("> ");
 						pesquisaCod = leia.nextInt();
 
 						for (int i = 0; i < 15; i++) {
@@ -753,9 +769,10 @@ public class Main {
 					} else {
 						System.out.println("Ungültiger Suchtyp.");
 					}
+
 				} else if (opcaoMenu == 3) {
 
-					System.out.println("");
+				System.out.println("");
 				System.out.println("=== RICHTLINIE BEARBEITEN ===");
 				
 				String tituloBusca = "";
@@ -877,6 +894,7 @@ public class Main {
 				} else if (opcaoMenu == 4) {
 					System.out.println("=== Anleitung Löschen ===");
 					System.out.println("Geben Sie den Titel ein, den Sie löschen möchten:");
+					System.out.print("> ");
 					exclusao = leia.nextLine();
 
 					for (int i = 0; i < 15; i++) {
@@ -885,6 +903,7 @@ public class Main {
 								System.out.println("Sind Sie sicher, dass Sie diese Anleitung löschen möchten?");
 								System.out.println("1- Ja");
 								System.out.println("2- Nein");
+								System.out.print("> ");
 								respostaExclusao = leia.nextInt();
 
 								if (respostaExclusao == 1) {
@@ -897,10 +916,10 @@ public class Main {
 
 									titulosDe[15 - 1] = null;
 									removido = true;
-									System.out.println("Orientação removida");
+									System.out.println("Anleitung entfernt.");
 									break;
 								} else {
-									System.out.println("Orientação não excluida.");
+									System.out.println("Führung nicht ausgeschlossen.");
 								}
 							}
 
