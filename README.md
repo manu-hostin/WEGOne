@@ -117,9 +117,9 @@
       </tr>
     </table>
 
-    <p><em>
+    <p>
       Todos os requisitos e funcionalidades implementadas neste sistema partiram das restrições impostas pela disciplina de Lógica de Programação. Durante o desenvolvimento, foi necessário utilizar exclusivamente as estruturas de controle e funções abordadas nas aulas, conforme determinado pelo plano de ensino do curso.
-    </em></p>
+  </p>
   </div>
 
 </body>
