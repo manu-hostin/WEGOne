@@ -2,58 +2,6 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>📘 WEGOne - Sistema de Cadastro e Consulta</title>
-  <style>
-    body {
-      background-color: #0d1117;
-      color: #c9d1d9;
-      font-family: 'Segoe UI', sans-serif;
-      padding: 30px;
-      line-height: 1.6;
-    }
-
-    h1, h2, h3 {
-      color: #58a6ff;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin: 20px 0;
-      background-color: #161b22;
-    }
-
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border: 1px solid #30363d;
-    }
-
-    th {
-      background-color: #21262d;
-      color: #79c0ff;
-    }
-
-    .section {
-      margin-bottom: 40px;
-    }
-
-    ul {
-      list-style: "✅ ";
-      padding-left: 20px;
-    }
-
-    code {
-      background-color: #21262d;
-      padding: 2px 6px;
-      border-radius: 4px;
-      color: #f0f6fc;
-    }
-
-    strong.scrum {
-      font-weight: bold;
-    }
-  </style>
 </head>
 <body>
 
