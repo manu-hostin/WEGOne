@@ -147,14 +147,13 @@ public class Main {
 		tipoOrientacaoDe[9] = tiposDe[4];
 		codigo[9] = 109;
 
-
 		posicaoAtual = 9;
 
 		System.out.println("Qual o seu idioma?/ What is your language?/ Was ist Ihre Sprache?");
 		System.out.println("1- Português;");
 		System.out.println("2- English;");
-		System.out.println("3- Deutsch");
-		System.out.print(">");
+		System.out.println("3- Deutsch.");
+		System.out.print("> ");
 		int idioma = leia.nextInt();
 
 		if (idioma == 1) {
@@ -176,26 +175,33 @@ public class Main {
 				if (opcaoMenu == 1) {
 					posicaoAtual = posicaoAtual + 1;
 
-					System.out.println("=== Cadastro de Nova Orientação ===");
+					System.out.println("\n=== CADASTRO DE NOVA ORIENTAÇÃO ===");
 					System.out.println("Informe o título da orientação:");
+					System.out.print("> ");
 					titulosPt[posicaoAtual] = leia.nextLine();
 					System.out.println("Digite o código do produto:");
-					codigo[posicaoAtual] = leia.nextInt();
-					System.out.println("Selecione o tipo de orientação:");
-					System.out.println("1- Manual de Operação;");
-					System.out.println("2- Procedimento de segurança;");
-					System.out.println("3- Manutenção e reparos;");
-					System.out.println("4- Testes e Diagnósticos;");
-					System.out.println("5- Manual de conduta e Operações Setoriais.");
 					System.out.print("> ");
-					tipo = leia.nextInt();
+					codigo[posicaoAtual] = leia.nextInt();
+					do {
+						System.out.println("Selecione o tipo de orientação:");
+						System.out.println("1- Manual de Operação;");
+						System.out.println("2- Procedimento de segurança;");
+						System.out.println("3- Manutenção e reparos;");
+						System.out.println("4- Testes e Diagnósticos;");
+						System.out.println("5- Manual de conduta e Operações Setoriais.");
+						System.out.print("> ");
+						tipo = leia.nextInt();
+						if (tipo > 5) {
+							System.out.println("\nInválido, tente novamente.\n");
+						}
+					} while (tipo > 5);
 					tipoOrientacaoPt[posicaoAtual] = tiposPt[tipo - 1];
 					leia.nextLine();
 					System.out.println("Digite o conteúdo da orientação:");
 					System.out.print("> ");
 
 					conteudoPt[posicaoAtual] = leia.nextLine();
-					System.out.println("\nCadastro realizado com sucesso!");
+					System.out.println("\n✅ Cadastro realizado com sucesso!");
 					System.out.println("Título: " + titulosPt[posicaoAtual]);
 					System.out.println("Código: " + codigo[posicaoAtual]);
 					System.out.println("Tipo: " + tipoOrientacaoPt[posicaoAtual]);
@@ -203,12 +209,17 @@ public class Main {
 
 				} else if (opcaoMenu == 2) {
 					encontrado = false;
-					System.out.println("=== Pesquisar Orientação ===");
-					System.out.println("Como você vai querer pesquisar?");
-					System.out.println("1- Título;");
-					System.out.println("2- Código.");
-					System.out.print(">");
-					tipoPesquisa = leia.nextInt();
+					do {
+						System.out.println("\n=== PESQUISA DE ORIENTAÇÃO ===");
+						System.out.println("Como você vai querer pesquisar?");
+						System.out.println("1- Título;");
+						System.out.println("2- Código.");
+						System.out.print("> ");
+						tipoPesquisa = leia.nextInt();
+						if (tipoPesquisa > 2) {
+							System.out.println("\nInválido, tente novamente.");
+						}
+					} while (tipoPesquisa > 2);
 					leia.nextLine();
 
 					if (tipoPesquisa == 1) {
@@ -219,6 +230,7 @@ public class Main {
 						for (int i = 0; i < 15; i++) {
 							if (titulosPt[i] != null) {
 								if (titulosPt[i].equalsIgnoreCase(pesquisa)) {
+									System.out.println("\n✅ Título encontrado!");
 									System.out.println("Título: " + titulosPt[i]);
 									System.out.println("Código: " + codigo[i]);
 									System.out.println("Tipo: " + tipoOrientacaoPt[i]);
@@ -229,7 +241,7 @@ public class Main {
 							}
 						}
 						if (encontrado != true) {
-							System.out.println("Título não encontrado.");
+							System.out.println("\n❌ Título não encontrado.");
 						}
 					} else if (tipoPesquisa == 2) {
 						System.out.println("Digite o código que você deseja pesquisar:");
@@ -238,6 +250,7 @@ public class Main {
 
 						for (int i = 0; i < 15; i++) {
 							if (codigo[i] == pesquisaCod) {
+								System.out.println("\n✅ Código encontrado!");
 								System.out.println("Título: " + titulosPt[i]);
 								System.out.println("Código: " + codigo[i]);
 								System.out.println("Tipo: " + tipoOrientacaoPt[i]);
@@ -247,134 +260,133 @@ public class Main {
 							}
 						}
 						if (encontrado != true) {
-							System.out.println("Código não encontrado.");
+							System.out.println("\n❌ Código não encontrado.");
 						}
 					} else {
-						System.out.println("Tipo de pesquisa inexistente.");
+						System.out.println("\nTipo de pesquisa inexistente.");
 					}
 				} else if (opcaoMenu == 3) {
 
-					System.out.println("");
-				System.out.println("=== EDITAR ORIENTAÇÃO ===");
+					System.out.println("\n=== EDITAR ORIENTAÇÃO ===");
 
-				String tituloBusca = "";
-				encontrado = false;
+					String tituloBusca = "";
+					encontrado = false;
 
-				do {
-					
-					System.out.println("Digite o título da orientação que deseja editar:");
-					System.out.print("> ");
-					tituloBusca = leia.nextLine();
+					do {
 
-					for (int i = 0; i < 15; i++) {
-						
-						if (titulosPt[i] != null && titulosPt[i].equalsIgnoreCase(tituloBusca)) {
-							
-							encontrado = true;
-							System.out.println("\nTítulo encontrado!");
-							char resposta;
-							
-							do {
-								
-								System.out.println("\nTítulo atual em português: " + titulosPt[i]);
-								System.out.println("Deseja alterar o título em português? (S/N)");
-								System.out.print("> ");
-								resposta = leia.nextLine().charAt(0);
+						System.out.println("Digite o título da orientação que deseja editar:");
+						System.out.print("> ");
+						tituloBusca = leia.nextLine();
 
-								if (resposta == 'S' || resposta == 's') {
-									
-									System.out.println("Novo título em português:");
+						for (int i = 0; i < 15; i++) {
+
+							if (titulosPt[i] != null && titulosPt[i].equalsIgnoreCase(tituloBusca)) {
+
+								encontrado = true;
+								System.out.println("\nTítulo encontrado!");
+								char resposta;
+
+								do {
+
+									System.out.println("\nTítulo atual em português: " + titulosPt[i]);
+									System.out.println("Deseja alterar o título em português? (S/N)");
 									System.out.print("> ");
-									titulosPt[i] = leia.nextLine();
+									resposta = leia.nextLine().charAt(0);
 
-								} else if (resposta != 'N' && resposta != 'n') {
-									
-									System.out.println("Opção inválida. Digite S ou N.");
-									
-								}
+									if (resposta == 'S' || resposta == 's') {
 
-							} while (resposta != 'S' && resposta != 's' && resposta != 'N' && resposta != 'n');
-
-							do {
-								
-								System.out.println("Deseja alterar o tipo? (S/N)");
-								System.out.print("> ");
-								resposta = leia.next().charAt(0);
-								leia.nextLine();
-
-								if (resposta == 'S' || resposta == 's') {
-									
-									int tipoIndex = 0;
-									boolean tipoValido = false;
-									
-									while (!tipoValido) {
-										
-										System.out.println("\nEscolha o novo tipo:");
-										System.out.println("1 - Manual de Operação");
-										System.out.println("2 - Procedimento de Segurança");
-										System.out.println("3 - Manutenção e Reparo");
-										System.out.println("4 - Testes e Diagnóstico");
-										System.out.println("5 - Manual de Conduta e Operações Setoriais");
+										System.out.println("Novo título em português:");
 										System.out.print("> ");
-										tipoIndex = leia.nextInt();
-										leia.nextLine();
+										titulosPt[i] = leia.nextLine();
 
-										if (tipoIndex >= 1 && tipoIndex <= tiposPt.length) {
-											
-											tipoOrientacaoPt[i] = tiposPt[tipoIndex - 1];
-											tipoValido = true;
-											
-										} else {
-											
-											System.out.println("Tipo inválido. Tente novamente.");
-											
-										}
+									} else if (resposta != 'N' && resposta != 'n') {
+
+										System.out.println("\nInválido, digite S ou N.");
+
 									}
 
-								} else if (resposta != 'N' && resposta != 'n') {
-									
-									System.out.println("Opção inválida. Digite S ou N.");
-									
-								}
+								} while (resposta != 'S' && resposta != 's' && resposta != 'N' && resposta != 'n');
 
-							} while (resposta != 'S' && resposta != 's' && resposta != 'N' && resposta != 'n');
+								do {
 
-							do {
-								
-								System.out.println("\nConteúdo atual em português: " + conteudoPt[i]);
-								System.out.println("Deseja alterar o conteúdo em português? (S/N)");
-								System.out.print("> ");
-								resposta = leia.nextLine().charAt(0);
-
-								if (resposta == 'S' || resposta == 's') {
-									
-									System.out.println("Novo conteúdo em português:");
+									System.out.println("Deseja alterar o tipo? (S/N)");
 									System.out.print("> ");
-									conteudoPt[i] = leia.nextLine();
+									resposta = leia.next().charAt(0);
+									leia.nextLine();
 
-								} else if (resposta != 'N' && resposta != 'n') {
-									
-									System.out.println("Opção inválida. Digite S ou N.");
-									
-								}
+									if (resposta == 'S' || resposta == 's') {
 
-							} while (resposta != 'S' && resposta != 's' && resposta != 'N' && resposta != 'n');
+										int tipoIndex = 0;
+										boolean tipoValido = false;
 
-							System.out.println("\n✅ Edição concluída com sucesso!");
-							break;
+										while (!tipoValido) {
+
+											System.out.println("\nEscolha o novo tipo:");
+											System.out.println("1 - Manual de Operação");
+											System.out.println("2 - Procedimento de Segurança");
+											System.out.println("3 - Manutenção e Reparo");
+											System.out.println("4 - Testes e Diagnóstico");
+											System.out.println("5 - Manual de Conduta e Operações Setoriais");
+											System.out.print("> ");
+											tipoIndex = leia.nextInt();
+											leia.nextLine();
+
+											if (tipoIndex >= 1 && tipoIndex <= tiposPt.length) {
+
+												tipoOrientacaoPt[i] = tiposPt[tipoIndex - 1];
+												tipoValido = true;
+
+											} else {
+
+												System.out.println("\nInválido, tente novamente.");
+
+											}
+										}
+
+									} else if (resposta != 'N' && resposta != 'n') {
+
+										System.out.println("\nInválido, digite S ou N.");
+
+									}
+
+								} while (resposta != 'S' && resposta != 's' && resposta != 'N' && resposta != 'n');
+
+								do {
+
+									System.out.println("\nConteúdo atual em português: " + conteudoPt[i]);
+									System.out.println("Deseja alterar o conteúdo em português? (S/N)");
+									System.out.print("> ");
+									resposta = leia.nextLine().charAt(0);
+
+									if (resposta == 'S' || resposta == 's') {
+
+										System.out.println("Novo conteúdo em português:");
+										System.out.print("> ");
+										conteudoPt[i] = leia.nextLine();
+
+									} else if (resposta != 'N' && resposta != 'n') {
+
+										System.out.println("\nInválido, digite S ou N.");
+
+									}
+
+								} while (resposta != 'S' && resposta != 's' && resposta != 'N' && resposta != 'n');
+
+								System.out.println("\n✅ Edição concluída com sucesso!");
+								break;
+							}
 						}
-					}
 
-					if (!encontrado) {
-						
-						System.out.println("\n❌ Título não encontrado!\n");
-						
-					}
+						if (!encontrado) {
 
-				} while (!encontrado);
+							System.out.println("\n❌ Título não encontrado!\n");
+
+						}
+
+					} while (!encontrado);
 
 				} else if (opcaoMenu == 4) {
-					System.out.println("=== Excluir Orientação ===");
+					System.out.println("\n=== EXCLUIR ORIENTAÇÃO ===");
 					System.out.println("Digite o título que deseja excluir:");
 					System.out.print("> ");
 					exclusao = leia.nextLine();
@@ -382,11 +394,16 @@ public class Main {
 					for (int i = 0; i < 15; i++) {
 						if (titulosPt[i] != null) {
 							if (titulosPt[i].equalsIgnoreCase(exclusao)) {
-								System.out.println("Tem certeza que deseja excluir esta orientação?");
-								System.out.println("1- Sim");
-								System.out.println("2- Não");
-								System.out.print("> ");
-								respostaExclusao = leia.nextInt();
+								do {
+									System.out.println("Tem certeza que deseja excluir esta orientação?");
+									System.out.println("1- Sim;");
+									System.out.println("2- Não.");
+									System.out.print("> ");
+									respostaExclusao = leia.nextInt();
+									if (respostaExclusao > 2) {
+										System.out.println("\nInválido, tente novamente.\n");
+									}
+								} while (respostaExclusao > 2);
 
 								if (respostaExclusao == 1) {
 									for (int j = i; j < 14 - 1; j++) {
@@ -398,10 +415,10 @@ public class Main {
 
 									titulosPt[15 - 1] = null;
 									removido = true;
-									System.out.println("Orientação removida");
+									System.out.println("\n✅ Orientação excluída.");
 									break;
 								} else {
-									System.out.println("Orientação não excluida.");
+									System.out.println("\n❌ Orientação não excluida.");
 								}
 							}
 
@@ -410,9 +427,9 @@ public class Main {
 					}
 				}
 			} while (opcaoMenu != 5);
-			
+
 			if (opcaoMenu == 5) {
-				System.out.println("Saindo...");
+				System.out.println("\nSaindo...");
 			}
 
 		}
@@ -435,25 +452,32 @@ public class Main {
 				if (opcaoMenu == 1) {
 					posicaoAtual = posicaoAtual + 1;
 
-					System.out.println("=== New Guidance Registration ===");
+					System.out.println("\n=== NEW GUIDANCE REGISTRATION ===");
 					System.out.println("Enter the title of the guidance:");
+					System.out.print("> ");
 					titulosEn[posicaoAtual] = leia.nextLine();
 					System.out.println("Enter the product code:");
-					codigo[posicaoAtual] = leia.nextInt();
-					System.out.println("Select the type of guidance:");
-					System.out.println("1- Operation Manual;");
-					System.out.println("2- Safety Procedure;");
-					System.out.println("3- Maintenance and Repairs;");
-					System.out.println("4- Tests and Diagnostics;");
-					System.out.println("5- Conduct Manual and Sectorial Operations.");
 					System.out.print("> ");
-					tipo = leia.nextInt();
+					codigo[posicaoAtual] = leia.nextInt();
+					do {
+						System.out.println("Select the type of guidance:");
+						System.out.println("1- Operation Manual;");
+						System.out.println("2- Safety Procedure;");
+						System.out.println("3- Maintenance and Repairs;");
+						System.out.println("4- Tests and Diagnostics;");
+						System.out.println("5- Conduct Manual and Sectorial Operations.");
+						System.out.print("> ");
+						tipo = leia.nextInt();
+						if (tipo > 5) {
+							System.out.println("\nInvalid, try again.");
+						}
+					} while (tipo > 5);
 					tipoOrientacaoEn[posicaoAtual] = tiposEn[tipo - 1];
 					leia.nextLine();
 					System.out.println("Enter the content of the guidance:");
 					System.out.print("> ");
 					conteudoEn[posicaoAtual] = leia.nextLine();
-					System.out.println("\nRegistration successful!");
+					System.out.println("\n✅ Registration successful!");
 					System.out.println("Title:" + titulosEn[posicaoAtual]);
 					System.out.println("Code: " + codigo[posicaoAtual]);
 					System.out.println("Type: " + tipoOrientacaoEn[posicaoAtual]);
@@ -461,12 +485,17 @@ public class Main {
 
 				} else if (opcaoMenu == 2) {
 					encontrado = false;
-					System.out.println("=== Search Guidance ===");
-					System.out.println("How would you like to search?");
-					System.out.println("1- Title;");
-					System.out.println("2- Code.");
-					System.out.print(">");
-					tipoPesquisa = leia.nextInt();
+					do {
+						System.out.println("=== SEARCH GUIDANCE ===");
+						System.out.println("How would you like to search?");
+						System.out.println("1- Title;");
+						System.out.println("2- Code.");
+						System.out.print("> ");
+						tipoPesquisa = leia.nextInt();
+						if (tipoPesquisa > 2) {
+							System.out.println("\nInvalid, try again.\n");
+						}
+					} while (tipoPesquisa > 2);
 					leia.nextLine();
 
 					if (tipoPesquisa == 1) {
@@ -477,6 +506,7 @@ public class Main {
 						for (int i = 0; i < 15; i++) {
 							if (titulosEn[i] != null) {
 								if (titulosEn[i].equalsIgnoreCase(pesquisa)) {
+									System.out.println("\n✅ Title found!");
 									System.out.println("Title: " + titulosEn[i]);
 									System.out.println("Code: " + codigo[i]);
 									System.out.println("Type: " + tipoOrientacaoEn[i]);
@@ -487,7 +517,7 @@ public class Main {
 							}
 						}
 						if (encontrado != true) {
-							System.out.println("Title not found.");
+							System.out.println("\n❌ Title not found.");
 						}
 					} else if (tipoPesquisa == 2) {
 						System.out.println("Enter the code you want to search for:");
@@ -496,6 +526,7 @@ public class Main {
 
 						for (int i = 0; i < 15; i++) {
 							if (codigo[i] == pesquisaCod) {
+								System.out.println("\n✅ Code found!");
 								System.out.println("Title: " + titulosEn[i]);
 								System.out.println("Code: " + codigo[i]);
 								System.out.println("Type: " + tipoOrientacaoEn[i]);
@@ -505,133 +536,132 @@ public class Main {
 							}
 						}
 						if (encontrado != true) {
-							System.out.println("Code not found.");
+							System.out.println("\n❌ Code not found.");
 						}
 					} else {
-						System.out.println("Invalid search type.");
+						System.out.println("\nInvalid search type.");
 					}
 				} else if (opcaoMenu == 3) {
 
-					System.out.println("");
-				System.out.println("=== EDIT GUIDELINE ===");
+					System.out.println("\n=== EDIT GUIDELINE ===");
 
-				String tituloBusca = "";
-				encontrado = false;
+					String tituloBusca = "";
+					encontrado = false;
 
-				do {
-					
-					System.out.println("Enter the title of the guideline you want to edit:");
-					System.out.print("> ");
-					tituloBusca = leia.nextLine();
+					do {
 
-					for (int i = 0; i < 15; i++) {
-						
-						if (titulosEn[i] != null && titulosEn[i].equalsIgnoreCase(tituloBusca)) {
-							
-							encontrado = true;
-							System.out.println("\nTitle found!");
-							char resposta;
+						System.out.println("Enter the title of the guideline you want to edit:");
+						System.out.print("> ");
+						tituloBusca = leia.nextLine();
 
-							do {
-								
-								System.out.println("\nCurrent English title: " + titulosEn[i]);
-								System.out.println("Change English title? (Y/N)");
-								System.out.print("> ");
-								resposta = leia.nextLine().charAt(0);
+						for (int i = 0; i < 15; i++) {
 
-								if (resposta == 'Y' || resposta == 'y') {
-									
-									System.out.println("New English title:");
+							if (titulosEn[i] != null && titulosEn[i].equalsIgnoreCase(tituloBusca)) {
+
+								encontrado = true;
+								System.out.println("\nTitle found!");
+								char resposta;
+
+								do {
+
+									System.out.println("\nCurrent English title: " + titulosEn[i]);
+									System.out.println("Change English title? (Y/N)");
 									System.out.print("> ");
-									titulosEn[i] = leia.nextLine();
+									resposta = leia.nextLine().charAt(0);
 
-								} else if (resposta != 'N' && resposta != 'n') {
-									
-									System.out.println("Invalid option. Enter Y or N.");
-									
-								}
+									if (resposta == 'Y' || resposta == 'y') {
 
-							} while (resposta != 'Y' && resposta != 'y' && resposta != 'N' && resposta != 'n');
-
-							do {
-
-								System.out.println("Change type? (Y/N)");
-								System.out.print("> ");
-								resposta = leia.next().charAt(0);
-								leia.nextLine();
-
-								if (resposta == 'Y' || resposta == 'y') {
-									
-									int tipoIndex = 0;
-									boolean tipoValido = false;
-									
-									while (!tipoValido) {
-										
-										System.out.println("\nChoose the new type:");
-										System.out.println("1 - Operation Manual");
-										System.out.println("2 - Safety Procedure");
-										System.out.println("3 - Maintenance and Repairs");
-										System.out.println("4 - Testing and Diagnostics");
-										System.out.println("5 - Conduct and Sectoral Operations Manual");
+										System.out.println("New English title:");
 										System.out.print("> ");
-										tipoIndex = leia.nextInt();
-										leia.nextLine();
+										titulosEn[i] = leia.nextLine();
 
-										if (tipoIndex >= 1 && tipoIndex <= tiposEn.length) {
-											
-											tipoOrientacaoEn[i] = tiposEn[tipoIndex - 1];
-											tipoValido = true;
+									} else if (resposta != 'N' && resposta != 'n') {
 
-										} else {
-											
-											System.out.println("Invalid type. Please try again.");
-											
-										}
+										System.out.println("Invalid, enter Y or N.\n");
+
 									}
 
-								} else if (resposta != 'N' && resposta != 'n') {
-									
-									System.out.println("Invalid option. Enter Y or N.");
-									
-								}
+								} while (resposta != 'Y' && resposta != 'y' && resposta != 'N' && resposta != 'n');
 
-							} while (resposta != 'Y' && resposta != 'y' && resposta != 'N' && resposta != 'n');
+								do {
 
-							do {
-								
-								System.out.println("\nCurrent English content: " + conteudoEn[i]);
-								System.out.println("Change English content? (Y/N)");
-								System.out.print("> ");
-								resposta = leia.nextLine().charAt(0);
-
-								if (resposta == 'Y' || resposta == 'y') {
-									
-									System.out.println("New English content:");
+									System.out.println("Change type? (Y/N)");
 									System.out.print("> ");
-									conteudoEn[i] = leia.nextLine();
+									resposta = leia.next().charAt(0);
+									leia.nextLine();
 
-								} else if (resposta != 'N' && resposta != 'n') {
-									
-									System.out.println("Invalid option. Enter Y or N.");
-									
-								}
+									if (resposta == 'Y' || resposta == 'y') {
 
-							} while (resposta != 'Y' && resposta != 'y' && resposta != 'N' && resposta != 'n');
+										int tipoIndex = 0;
+										boolean tipoValido = false;
 
-							System.out.println("\n✅ Edit completed successfully!");
-							break;
+										while (!tipoValido) {
+
+											System.out.println("\nChoose the new type:");
+											System.out.println("1 - Operation Manual");
+											System.out.println("2 - Safety Procedure");
+											System.out.println("3 - Maintenance and Repairs");
+											System.out.println("4 - Testing and Diagnostics");
+											System.out.println("5 - Conduct and Sectoral Operations Manual");
+											System.out.print("> ");
+											tipoIndex = leia.nextInt();
+											leia.nextLine();
+
+											if (tipoIndex >= 1 && tipoIndex <= tiposEn.length) {
+
+												tipoOrientacaoEn[i] = tiposEn[tipoIndex - 1];
+												tipoValido = true;
+
+											} else {
+
+												System.out.println("Invalid, try again.");
+
+											}
+										}
+
+									} else if (resposta != 'N' && resposta != 'n') {
+
+										System.out.println("Invalid, enter Y or N.");
+
+									}
+
+								} while (resposta != 'Y' && resposta != 'y' && resposta != 'N' && resposta != 'n');
+
+								do {
+
+									System.out.println("\nCurrent English content: " + conteudoEn[i]);
+									System.out.println("Change English content? (Y/N)");
+									System.out.print("> ");
+									resposta = leia.nextLine().charAt(0);
+
+									if (resposta == 'Y' || resposta == 'y') {
+
+										System.out.println("New English content:");
+										System.out.print("> ");
+										conteudoEn[i] = leia.nextLine();
+
+									} else if (resposta != 'N' && resposta != 'n') {
+
+										System.out.println("Invalid, enter Y or N.");
+
+									}
+
+								} while (resposta != 'Y' && resposta != 'y' && resposta != 'N' && resposta != 'n');
+
+								System.out.println("\n✅ Edit completed successfully!");
+								break;
+							}
 						}
-					}
 
-					if (!encontrado) {
-						
-						System.out.println("\n❌ Title not found!\n");
-						
-					}
-				} while (!encontrado);
+						if (!encontrado) {
+
+							System.out.println("\n❌ Title not found!\n");
+
+						}
+					} while (!encontrado);
 
 				} else if (opcaoMenu == 4) {
-					System.out.println("=== Delete Guidance ===");
+					System.out.println("\n=== DELETE GUIDANCE ===");
 					System.out.println("Enter the title you want to delete:");
 					System.out.print("> ");
 					exclusao = leia.nextLine();
@@ -639,11 +669,16 @@ public class Main {
 					for (int i = 0; i < 15; i++) {
 						if (titulosEn[i] != null) {
 							if (titulosEn[i].equalsIgnoreCase(exclusao)) {
-								System.out.println("Are you sure you want to delete this guidance?");
-								System.out.println("1- Yes");
-								System.out.println("2- No");
-								System.out.print("> ");
-								respostaExclusao = leia.nextInt();
+								do {
+									System.out.println("Are you sure you want to delete this guidance?");
+									System.out.println("1- Yes;");
+									System.out.println("2- No.");
+									System.out.print("> ");
+									respostaExclusao = leia.nextInt();
+									if (respostaExclusao > 2) {
+										System.out.println("\nInvalid, try again.\n");
+									}
+								} while (respostaExclusao > 2);
 
 								if (respostaExclusao == 1) {
 									for (int j = i; j < 14 - 1; j++) {
@@ -655,21 +690,21 @@ public class Main {
 
 									titulosEn[15 - 1] = null;
 									removido = true;
-									System.out.println("Guidance removed");
+									System.out.println("\n✅ Guidance removed");
 									break;
 								} else {
-									System.out.println("Guidance not deleted.");
+									System.out.println("\n❌ Guidance not deleted.");
 								}
 							}
 
 						}
 
 					}
-				} 
+				}
 			} while (opcaoMenu < 5);
-			
+
 			if (opcaoMenu == 5) {
-				System.out.println("Leaving...");
+				System.out.println("\nLeaving...");
 			}
 
 		}
@@ -692,27 +727,32 @@ public class Main {
 				if (opcaoMenu == 1) {
 					posicaoAtual = posicaoAtual + 1;
 
-					System.out.println("=== Neue Anleitung Registrierung ===");
+					System.out.println("\n=== NEUE ANLEITUNG REGISTRIERUNG ===");
 					System.out.println("Geben Sie den Titel der Anleitung ein:");
 					System.out.print("> ");
 					titulosDe[posicaoAtual] = leia.nextLine();
 					System.out.println("Geben Sie den Produktcode ein:");
 					System.out.print("> ");
 					codigo[posicaoAtual] = leia.nextInt();
-					System.out.println("Wählen Sie den Typ der Anleitung:");
-					System.out.println("1- Betriebsanleitung;");
-					System.out.println("2- Sicherheitsverfahren;");
-					System.out.println("3- Wartung und Reparaturen;");
-					System.out.println("4- Tests und Diagnosen;");
-					System.out.println("5- Verhaltenshandbuch und Sektorielle Operationen.");
-					System.out.print("> ");
-					tipo = leia.nextInt();
+					do {
+						System.out.println("Wählen Sie den Typ der Anleitung:");
+						System.out.println("1- Betriebsanleitung;");
+						System.out.println("2- Sicherheitsverfahren;");
+						System.out.println("3- Wartung und Reparaturen;");
+						System.out.println("4- Tests und Diagnosen;");
+						System.out.println("5- Verhaltenshandbuch und Sektorielle Operationen.");
+						System.out.print("> ");
+						tipo = leia.nextInt();
+						if (tipo > 5) {
+							System.out.println("\nUngültig, versuchen Sie es erneut.\n");
+						}
+					} while (tipo > 5);
 					tipoOrientacaoDe[posicaoAtual] = tiposDe[tipo - 1];
 					leia.nextLine();
 					System.out.println("Geben Sie den Inhalt der Anleitung ein:");
 					System.out.print("> ");
 					conteudoDe[posicaoAtual] = leia.nextLine();
-					System.out.println("\nRegistrierung erfolgreich!");
+					System.out.println("\n✅ Registrierung erfolgreich!");
 					System.out.println("Titel: " + titulosDe[posicaoAtual]);
 					System.out.println("Code: " + codigo[posicaoAtual]);
 					System.out.println("Typ: " + tipoOrientacaoDe[posicaoAtual]);
@@ -720,12 +760,17 @@ public class Main {
 
 				} else if (opcaoMenu == 2) {
 					encontrado = false;
-					System.out.println("=== Anleitung Suchen ===");
-					System.out.println("Wie möchten Sie suchen?");
-					System.out.println("1- Titel;");
-					System.out.println("2- Code.");
-					System.out.print(">");
-					tipoPesquisa = leia.nextInt();
+					do {
+						System.out.println("\n=== ANLEITUNG SUCHEN ===");
+						System.out.println("Wie möchten Sie suchen?");
+						System.out.println("1- Titel;");
+						System.out.println("2- Code.");
+						System.out.print("> ");
+						tipoPesquisa = leia.nextInt();
+						if (tipoPesquisa > 2) {
+							System.out.println("Ungültig, versuchen Sie es erneut.");
+						}
+					} while (tipoPesquisa > 2);
 					leia.nextLine();
 
 					if (tipoPesquisa == 1) {
@@ -736,6 +781,7 @@ public class Main {
 						for (int i = 0; i < 15; i++) {
 							if (titulosDe[i] != null) {
 								if (titulosDe[i].equalsIgnoreCase(pesquisa)) {
+									System.out.println("\n✅ Titel gefunden.");
 									System.out.println("Titel: " + titulosDe[i]);
 									System.out.println("Code: " + codigo[i]);
 									System.out.println("Typ: " + tipoOrientacaoDe[i]);
@@ -746,7 +792,7 @@ public class Main {
 							}
 						}
 						if (encontrado != true) {
-							System.out.println("Titel nicht gefunden.");
+							System.out.println("\n❌ Titel nicht gefunden.");
 						}
 					} else if (tipoPesquisa == 2) {
 						System.out.println("Geben Sie den Code ein, nach dem Sie suchen möchten:");
@@ -755,6 +801,7 @@ public class Main {
 
 						for (int i = 0; i < 15; i++) {
 							if (codigo[i] == pesquisaCod) {
+								System.out.println("\n✅ Code gefunden.");
 								System.out.println("Titel: " + titulosDe[i]);
 								System.out.println("Code: " + codigo[i]);
 								System.out.println("Typ: " + tipoOrientacaoDe[i]);
@@ -764,135 +811,134 @@ public class Main {
 							}
 						}
 						if (encontrado != true) {
-							System.out.println("Code nicht gefunden.");
+							System.out.println("\n❌ Code nicht gefunden.");
 						}
 					} else {
 						System.out.println("Ungültiger Suchtyp.");
 					}
 
 				} else if (opcaoMenu == 3) {
-
-				System.out.println("");
-				System.out.println("=== RICHTLINIE BEARBEITEN ===");
-				
-				String tituloBusca = "";
-				encontrado = false;
-
-				do {
 					
-					System.out.println("Geben Sie den Titel der Richtlinie ein, die Sie bearbeiten möchten:");
-					System.out.print("> ");
-					tituloBusca = leia.nextLine();
+					System.out.println("\n=== RICHTLINIE BEARBEITEN ===");
 
-					for (int i = 0; i < 15; i++) {
-						
-						if (titulosDe[i] != null && titulosDe[i].equalsIgnoreCase(tituloBusca)) {
-							
-							encontrado = true;
-							System.out.println("\nTitel gefunden!");
-							char resposta;
+					String tituloBusca = "";
+					encontrado = false;
 
-							do {
-								
-								System.out.println("\nAktueller deutscher Titel: " + titulosDe[i]);
-								System.out.println("Titel auf Deutsch ändern? (J/N)");
-								System.out.print("> ");
-								resposta = leia.nextLine().charAt(0);
+					do {
 
-								if (resposta == 'J' || resposta == 'j') {
-									
-									System.out.println("Neuer deutscher Titel:");
+						System.out.println("Geben Sie den Titel der Richtlinie ein, die Sie bearbeiten möchten:");
+						System.out.print("> ");
+						tituloBusca = leia.nextLine();
+
+						for (int i = 0; i < 15; i++) {
+
+							if (titulosDe[i] != null && titulosDe[i].equalsIgnoreCase(tituloBusca)) {
+
+								encontrado = true;
+								System.out.println("\nTitel gefunden!");
+								char resposta;
+
+								do {
+
+									System.out.println("\nAktueller deutscher Titel: " + titulosDe[i]);
+									System.out.println("Titel auf Deutsch ändern? (J/N)");
 									System.out.print("> ");
-									titulosDe[i] = leia.nextLine();
+									resposta = leia.nextLine().charAt(0);
 
-								} else if (resposta != 'N' && resposta != 'n') {
-									
-									System.out.println("Ungültige Option. Geben Sie J oder N ein.");
-									
-								}
+									if (resposta == 'J' || resposta == 'j') {
 
-							} while (resposta != 'J' && resposta != 'j' && resposta != 'N' && resposta != 'n');
-
-							do {
-								
-								System.out.println("Typ ändern? (J/N)");
-								System.out.print("> ");
-								resposta = leia.next().charAt(0);
-								leia.nextLine();
-
-								if (resposta == 'J' || resposta == 'j') {
-									
-									int tipoIndex = 0;
-									boolean tipoValido = false;
-									
-									while (!tipoValido) {
-										
-										System.out.println("\nWählen Sie den neuen Typ:");
-										System.out.println("1 - Bedienungsanleitung");
-										System.out.println("2 - Sicherheitsverfahren");
-										System.out.println("3 - Wartung und Reparatur");
-										System.out.println("4 - Tests und Diagnose");
-										System.out.println("5 - Verhaltens- und Betriebsrichtlinien");
+										System.out.println("Neuer deutscher Titel:");
 										System.out.print("> ");
-										tipoIndex = leia.nextInt();
-										leia.nextLine();
-										
-										if (tipoIndex >= 1 && tipoIndex <= tiposEn.length) {
-											
-											tipoOrientacaoEn[i] = tiposEn[tipoIndex - 1];
-											tipoValido = true;
-											
-										} else {
-											
-											System.out.println("Ungültiger Typ. Bitte erneut versuchen.");
-											
-										}
+										titulosDe[i] = leia.nextLine();
+
+									} else if (resposta != 'N' && resposta != 'n') {
+
+										System.out.println("Ungültige, geben Sie J oder N ein.\n");
+
 									}
 
-								} else if (resposta != 'N' && resposta != 'n') {
-									
-									System.out.println("Ungültige Option. Geben Sie J oder N ein.");
-									
-								}
+								} while (resposta != 'J' && resposta != 'j' && resposta != 'N' && resposta != 'n');
 
-							} while (resposta != 'J' && resposta != 'j' && resposta != 'N' && resposta != 'n');
+								do {
 
-							do {
-								
-								System.out.println("\nAktueller deutscher Inhalt: " + conteudoDe[i]);
-								System.out.println("Inhalt auf Deutsch ändern? (J/N)");
-								System.out.print("> ");
-								resposta = leia.nextLine().charAt(0);
-
-								if (resposta == 'J' || resposta == 'j') {
-									
-									System.out.println("Neuer deutscher Inhalt:");
+									System.out.println("Typ ändern? (J/N)");
 									System.out.print("> ");
-									conteudoDe[i] = leia.nextLine();
+									resposta = leia.next().charAt(0);
+									leia.nextLine();
 
-								} else if (resposta != 'N' && resposta != 'n') {
-									
-									System.out.println("Ungültige Option. Geben Sie J oder N ein.");
-									
-								}
+									if (resposta == 'J' || resposta == 'j') {
 
-							} while (resposta != 'J' && resposta != 'j' && resposta != 'N' && resposta != 'n');
+										int tipoIndex = 0;
+										boolean tipoValido = false;
 
-							System.out.println("\n✅ Bearbeitung erfolgreich abgeschlossen!");
-							break;
+										while (!tipoValido) {
+
+											System.out.println("\nWählen Sie den neuen Typ:");
+											System.out.println("1 - Bedienungsanleitung");
+											System.out.println("2 - Sicherheitsverfahren");
+											System.out.println("3 - Wartung und Reparatur");
+											System.out.println("4 - Tests und Diagnose");
+											System.out.println("5 - Verhaltens- und Betriebsrichtlinien");
+											System.out.print("> ");
+											tipoIndex = leia.nextInt();
+											leia.nextLine();
+
+											if (tipoIndex >= 1 && tipoIndex <= tiposEn.length) {
+
+												tipoOrientacaoEn[i] = tiposEn[tipoIndex - 1];
+												tipoValido = true;
+
+											} else {
+
+												System.out.println("Ungültig, versuchen Sie es erneut.");
+
+											}
+										}
+
+									} else if (resposta != 'N' && resposta != 'n') {
+
+										System.out.println("Ungültige, geben Sie J oder N ein.\n");
+
+									}
+
+								} while (resposta != 'J' && resposta != 'j' && resposta != 'N' && resposta != 'n');
+
+								do {
+
+									System.out.println("\nAktueller deutscher Inhalt: " + conteudoDe[i]);
+									System.out.println("Inhalt auf Deutsch ändern? (J/N)");
+									System.out.print("> ");
+									resposta = leia.nextLine().charAt(0);
+
+									if (resposta == 'J' || resposta == 'j') {
+
+										System.out.println("Neuer deutscher Inhalt:");
+										System.out.print("> ");
+										conteudoDe[i] = leia.nextLine();
+
+									} else if (resposta != 'N' && resposta != 'n') {
+
+										System.out.println("Ungültige, geben Sie J oder N ein.\n");
+
+									}
+
+								} while (resposta != 'J' && resposta != 'j' && resposta != 'N' && resposta != 'n');
+
+								System.out.println("\n✅ Bearbeitung erfolgreich abgeschlossen!");
+								break;
+							}
 						}
-					}
 
-					if (!encontrado) {
-						
-						System.out.println("\n❌ Titel nicht gefunden!\n");
-						
-					}
+						if (!encontrado) {
 
-				} while (!encontrado);
+							System.out.println("\n❌ Titel nicht gefunden!\n");
+
+						}
+
+					} while (!encontrado);
 
 				} else if (opcaoMenu == 4) {
-					System.out.println("=== Anleitung Löschen ===");
+					System.out.println("\n=== ANLEITUNG LÖSCHEN ===");
 					System.out.println("Geben Sie den Titel ein, den Sie löschen möchten:");
 					System.out.print("> ");
 					exclusao = leia.nextLine();
@@ -900,11 +946,16 @@ public class Main {
 					for (int i = 0; i < 15; i++) {
 						if (titulosDe[i] != null) {
 							if (titulosDe[i].equalsIgnoreCase(exclusao)) {
-								System.out.println("Sind Sie sicher, dass Sie diese Anleitung löschen möchten?");
-								System.out.println("1- Ja");
-								System.out.println("2- Nein");
-								System.out.print("> ");
-								respostaExclusao = leia.nextInt();
+								do {
+									System.out.println("Sind Sie sicher, dass Sie diese Anleitung löschen möchten?");
+									System.out.println("1- Ja;");
+									System.out.println("2- Nein.");
+									System.out.print("> ");
+									respostaExclusao = leia.nextInt();
+									if (respostaExclusao > 2) {
+										System.out.println("\nUngültig, versuchen Sie es erneut.\n");
+									}
+								} while (respostaExclusao > 2);
 
 								if (respostaExclusao == 1) {
 									for (int j = i; j < 14 - 1; j++) {
@@ -916,10 +967,11 @@ public class Main {
 
 									titulosDe[15 - 1] = null;
 									removido = true;
-									System.out.println("Anleitung entfernt.");
+									System.out.println("\n✅ Anleitung entfernt.");
 									break;
 								} else {
-									System.out.println("Führung nicht ausgeschlossen.");
+									System.out.println("\n❌ Orientação não excluida.");
+									
 								}
 							}
 
@@ -930,7 +982,7 @@ public class Main {
 			} while (opcaoMenu != 5);
 
 			if (opcaoMenu == 5) {
-				System.out.println("Verlassen...");
+				System.out.println("\nVerlassen...");
 			}
 		}
 	}
