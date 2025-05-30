@@ -1,989 +1,886 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
-	public static void main(String[] args) {
-		Scanner leia = new Scanner(System.in);
-
-		int opcaoMenu = 0;
-		int tipoPesquisa = 0;
-		int posicaoAtual = 0;
-		String pesquisa = "";
-		boolean encontrado = false;
-		int pesquisaCod = 0;
-		String exclusao = "";
-		int respostaExclusao = 0;
-		boolean removido = false;
-		int tipo = 0;
-		int sair = 0;
-
-		String[] titulosPt = new String[15];
-		String[] titulosEn = new String[15];
-		String[] titulosDe = new String[15];
-
-		int[] codigo = new int[15];
-
-		String[] conteudoPt = new String[15];
-		String[] conteudoEn = new String[15];
-		String[] conteudoDe = new String[15];
-
-		String[] tiposPt = { "Manual de Operação;", "Procedimento de Segurança;", "Manutenção e Reparos;",
-				"Testes e Diagnósticos;", "Manual de Conduta e Operações Setoriais." };
-		String[] tiposEn = { "Operation Manual;", "Safety procedure;", "Maintenance and repairs;",
-				"Tests and Diagnostics;", "Sectoral Conduct and Operations Manual." };
-		String[] tiposDe = { "Bedienungsanleitung;", "Sicherheitsverfahren;", "Wartung und Reparaturen;",
-				"Tests und Diagnose;", "Branchenhandbuch für Verhalten und Betrieb." };
-
-		String[] tipoOrientacaoPt = new String[15];
-		String[] tipoOrientacaoEn = new String[15];
-		String[] tipoOrientacaoDe = new String[15];
-
-		titulosPt[0] = "Acesso a Regras e Procedimentos";
-		titulosEn[0] = "Access to Rules and Procedures";
-		titulosDe[0] = "Zugang zu Regeln und Verfahren";
-		conteudoPt[0] = "As orientações devem estar facilmente acessíveis aos colaboradores, para garantir o cumprimento adequado das normas.";
-		conteudoEn[0] = "Guidelines must be easily accessible to employees to ensure proper compliance with the rules.";
-		conteudoDe[0] = "Die Richtlinien müssen für Mitarbeitende leicht zugänglich sein, um die Einhaltung der Vorschriften sicherzustellen.";
-		tipoOrientacaoPt[0] = tiposPt[0];
-		tipoOrientacaoEn[0] = tiposEn[0];
-		tipoOrientacaoDe[0] = tiposDe[0];
-		codigo[0] = 100;
-
-		titulosPt[1] = "Uso de Ferramentas de Planejamento";
-		titulosEn[1] = "Use of Planning Tools";
-		titulosDe[1] = "Verwendung von Planungswerkzeugen";
-		conteudoPt[1] = "Ferramentas como SharkPoint e foco semanal são utilizadas para organizar o trabalho de curto prazo.";
-		conteudoEn[1] = "Tools such as SharkPoint and weekly focus are used to organize short-term tasks.";
-		conteudoDe[1] = "Werkzeuge wie SharkPoint und Wochenfokus werden verwendet, um kurzfristige Aufgaben zu organisieren.";
-		tipoOrientacaoPt[1] = tiposPt[0];
-		tipoOrientacaoEn[1] = tiposEn[0];
-		tipoOrientacaoDe[1] = tiposDe[0];
-		codigo[1] = 101;
-
-		titulosPt[2] = "Regras de Segurança Pessoal";
-		titulosEn[2] = "Personal Safety Rules";
-		titulosDe[2] = "Persönliche Sicherheitsregeln";
-		conteudoPt[2] = "O uso de calçados fechados e calças é obrigatório em todas as áreas operacionais.";
-		conteudoEn[2] = "The use of closed shoes and pants is mandatory in all operational areas.";
-		conteudoDe[2] = "Das Tragen von geschlossenen Schuhen und Hosen ist in allen Betriebsbereichen vorgeschrieben.";
-		tipoOrientacaoPt[2] = tiposPt[1];
-		tipoOrientacaoEn[2] = tiposEn[1];
-		tipoOrientacaoDe[2] = tiposDe[1];
-		codigo[2] = 102;
-
-		titulosPt[3] = "Instalações Elétricas Seguras";
-		titulosEn[3] = "Safe Electrical Installations";
-		titulosDe[3] = "Sichere Elektroinstallationen";
-		conteudoPt[3] = "Antes de realizar qualquer manutenção, desligue a alimentação elétrica e utilize EPI.";
-		conteudoEn[3] = "Before performing any maintenance, turn off the power supply and wear PPE.";
-		conteudoDe[3] = "Vor Wartungsarbeiten muss die Stromversorgung abgeschaltet und persönliche Schutzausrüstung getragen werden.";
-		tipoOrientacaoPt[3] = tiposPt[1];
-		tipoOrientacaoEn[3] = tiposEn[1];
-		tipoOrientacaoDe[3] = tiposDe[1];
-		codigo[3] = 103;
-
-		titulosPt[4] = "Manutenção de Rotina";
-		titulosEn[4] = "Routine Maintenance";
-		titulosDe[4] = "Routine Wartung";
-		conteudoPt[4] = "Realize inspeções semanais nos equipamentos para evitar falhas inesperadas.";
-		conteudoEn[4] = "Perform weekly inspections on equipment to prevent unexpected failures.";
-		conteudoDe[4] = "Führen Sie wöchentliche Inspektionen der Geräte durch, um unerwartete Ausfälle zu vermeiden.";
-		tipoOrientacaoPt[4] = tiposPt[2];
-		tipoOrientacaoEn[4] = tiposEn[2];
-		tipoOrientacaoDe[4] = tiposDe[2];
-		codigo[4] = 104;
-
-		titulosPt[5] = "Ajuste de Componentes";
-		titulosEn[5] = "Component Adjustment";
-		titulosDe[5] = "Komponenten anpassen";
-		conteudoPt[5] = "Certifique-se de ajustar peças soltas durante manutenções preventivas.";
-		conteudoEn[5] = "Ensure to tighten loose components during preventive maintenance.";
-		conteudoDe[5] = "Stellen Sie sicher, dass lose Komponenten bei der vorbeugenden Wartung festgezogen werden.";
-		tipoOrientacaoPt[5] = tiposPt[2];
-		tipoOrientacaoEn[5] = tiposEn[2];
-		tipoOrientacaoDe[5] = tiposDe[2];
-		codigo[5] = 105;
-
-		titulosPt[6] = "Teste de Funcionalidade";
-		titulosEn[6] = "Functionality Test";
-		titulosDe[6] = "Funktionstest";
-		conteudoPt[6] = "Após reparos, realize testes de funcionalidade para garantir o pleno funcionamento.";
-		conteudoEn[6] = "After repairs, perform functionality tests to ensure proper operation.";
-		conteudoDe[6] = "Nach Reparaturen Funktionstests durchführen, um einen ordnungsgemäßen Betrieb sicherzustellen.";
-		tipoOrientacaoPt[6] = tiposPt[3];
-		tipoOrientacaoEn[6] = tiposEn[3];
-		tipoOrientacaoDe[6] = tiposDe[3];
-		codigo[6] = 106;
-
-		titulosPt[7] = "Diagnóstico de Falhas";
-		titulosEn[7] = "Failure Diagnosis";
-		titulosDe[7] = "Fehlerdiagnose";
-		conteudoPt[7] = "Utilize ferramentas de diagnóstico para identificar falhas antes de realizar a manutenção.";
-		conteudoEn[7] = "Use diagnostic tools to identify failures before performing maintenance.";
-		conteudoDe[7] = "Verwenden Sie Diagnosewerkzeuge, um Fehler vor der Wartung zu identifizieren.";
-		tipoOrientacaoPt[7] = tiposPt[3];
-		tipoOrientacaoEn[7] = tiposEn[3];
-		tipoOrientacaoDe[7] = tiposDe[3];
-		codigo[7] = 107;
-
-		titulosPt[8] = "Comprometimento com Propósitos";
-		titulosEn[8] = "Commitment to Purposes";
-		titulosDe[8] = "Engagement für Zwecke";
-		conteudoPt[8] = "Todos devem manter disciplina e comprometimento com os valores da empresa.";
-		conteudoEn[8] = "Everyone must maintain discipline and commitment to company values.";
-		conteudoDe[8] = "Alle sollen Disziplin und Engagement für die Unternehmenswerte zeigen.";
-		tipoOrientacaoPt[8] = tiposPt[4];
-		tipoOrientacaoEn[8] = tiposEn[4];
-		tipoOrientacaoDe[8] = tiposDe[4];
-		codigo[8] = 108;
-
-		titulosPt[9] = "Comunicação Interna";
-		titulosEn[9] = "Internal Communication";
-		titulosDe[9] = "Interne Kommunikation";
-		conteudoPt[9] = "Use e-mail, Teams ou telefone conforme o contexto da comunicação.";
-		conteudoEn[9] = "Use email, Teams, or phone depending on the communication context.";
-		conteudoDe[9] = "Verwenden Sie je nach Kommunikationskontext E-Mail, Teams oder Telefon.";
-		tipoOrientacaoPt[9] = tiposPt[4];
-		tipoOrientacaoEn[9] = tiposEn[4];
-		tipoOrientacaoDe[9] = tiposDe[4];
-		codigo[9] = 109;
-
-		posicaoAtual = 9;
-
-		System.out.println("Qual o seu idioma?/ What is your language?/ Was ist Ihre Sprache?");
-		System.out.println("1- Português;");
-		System.out.println("2- English;");
-		System.out.println("3- Deutsch.");
-		System.out.print("> ");
-		int idioma = leia.nextInt();
-
-		if (idioma == 1) {
-			do {
-				System.out.println("");
-				System.out.println("Bem-vindo(a) ao WegOne:");
-				System.out.println("");
-				System.out.println("=== MENU ===");
-				System.out.println("1. Cadastrar;");
-				System.out.println("2. Pesquisar;");
-				System.out.println("3. Editar;");
-				System.out.println("4. Excluir;");
-				System.out.println("5. Sair.");
-				System.out.println("Oque você deseja acessar?");
-				System.out.print("> ");
-				opcaoMenu = leia.nextInt();
-				leia.nextLine();
-
-				if (opcaoMenu == 1) {
-					posicaoAtual = posicaoAtual + 1;
-
-					System.out.println("\n=== CADASTRO DE NOVA ORIENTAÇÃO ===");
-					System.out.println("Informe o título da orientação:");
-					System.out.print("> ");
-					titulosPt[posicaoAtual] = leia.nextLine();
-					System.out.println("Digite o código do produto:");
-					System.out.print("> ");
-					codigo[posicaoAtual] = leia.nextInt();
-					do {
-						System.out.println("Selecione o tipo de orientação:");
-						System.out.println("1- Manual de Operação;");
-						System.out.println("2- Procedimento de segurança;");
-						System.out.println("3- Manutenção e reparos;");
-						System.out.println("4- Testes e Diagnósticos;");
-						System.out.println("5- Manual de conduta e Operações Setoriais.");
-						System.out.print("> ");
-						tipo = leia.nextInt();
-						if (tipo > 5) {
-							System.out.println("\nInválido, tente novamente.\n");
-						}
-					} while (tipo > 5);
-					tipoOrientacaoPt[posicaoAtual] = tiposPt[tipo - 1];
-					leia.nextLine();
-					System.out.println("Digite o conteúdo da orientação:");
-					System.out.print("> ");
-
-					conteudoPt[posicaoAtual] = leia.nextLine();
-					System.out.println("\n✅ Cadastro realizado com sucesso!");
-					System.out.println("Título: " + titulosPt[posicaoAtual]);
-					System.out.println("Código: " + codigo[posicaoAtual]);
-					System.out.println("Tipo: " + tipoOrientacaoPt[posicaoAtual]);
-					System.out.println("Conteúdo: " + conteudoPt[posicaoAtual]);
-
-				} else if (opcaoMenu == 2) {
-					encontrado = false;
-					do {
-						System.out.println("\n=== PESQUISA DE ORIENTAÇÃO ===");
-						System.out.println("Como você vai querer pesquisar?");
-						System.out.println("1- Título;");
-						System.out.println("2- Código.");
-						System.out.print("> ");
-						tipoPesquisa = leia.nextInt();
-						if (tipoPesquisa > 2) {
-							System.out.println("\nInválido, tente novamente.");
-						}
-					} while (tipoPesquisa > 2);
-					leia.nextLine();
-
-					if (tipoPesquisa == 1) {
-						System.out.println("Digite o título que você deseja pesquisar:");
-						System.out.print("> ");
-						pesquisa = leia.nextLine();
-
-						for (int i = 0; i < 15; i++) {
-							if (titulosPt[i] != null) {
-								if (titulosPt[i].equalsIgnoreCase(pesquisa)) {
-									System.out.println("\n✅ Título encontrado!");
-									System.out.println("Título: " + titulosPt[i]);
-									System.out.println("Código: " + codigo[i]);
-									System.out.println("Tipo: " + tipoOrientacaoPt[i]);
-									System.out.println("Conteúdo: " + conteudoPt[i]);
-									encontrado = true;
-									break;
-								}
-							}
-						}
-						if (encontrado != true) {
-							System.out.println("\n❌ Título não encontrado.");
-						}
-					} else if (tipoPesquisa == 2) {
-						System.out.println("Digite o código que você deseja pesquisar:");
-						System.out.print("> ");
-						pesquisaCod = leia.nextInt();
-
-						for (int i = 0; i < 15; i++) {
-							if (codigo[i] == pesquisaCod) {
-								System.out.println("\n✅ Código encontrado!");
-								System.out.println("Título: " + titulosPt[i]);
-								System.out.println("Código: " + codigo[i]);
-								System.out.println("Tipo: " + tipoOrientacaoPt[i]);
-								System.out.println("Conteúdo: " + conteudoPt[i]);
-								encontrado = true;
-								break;
-							}
-						}
-						if (encontrado != true) {
-							System.out.println("\n❌ Código não encontrado.");
-						}
-					} else {
-						System.out.println("\nTipo de pesquisa inexistente.");
-					}
-				} else if (opcaoMenu == 3) {
-
-					System.out.println("\n=== EDITAR ORIENTAÇÃO ===");
-
-					String tituloBusca = "";
-					encontrado = false;
-
-					do {
-
-						System.out.println("Digite o título da orientação que deseja editar:");
-						System.out.print("> ");
-						tituloBusca = leia.nextLine();
-
-						for (int i = 0; i < 15; i++) {
-
-							if (titulosPt[i] != null && titulosPt[i].equalsIgnoreCase(tituloBusca)) {
-
-								encontrado = true;
-								System.out.println("\nTítulo encontrado!");
-								char resposta;
-
-								do {
-
-									System.out.println("\nTítulo atual em português: " + titulosPt[i]);
-									System.out.println("Deseja alterar o título em português? (S/N)");
-									System.out.print("> ");
-									resposta = leia.nextLine().charAt(0);
-
-									if (resposta == 'S' || resposta == 's') {
-
-										System.out.println("Novo título em português:");
-										System.out.print("> ");
-										titulosPt[i] = leia.nextLine();
-
-									} else if (resposta != 'N' && resposta != 'n') {
-
-										System.out.println("\nInválido, digite S ou N.");
-
-									}
-
-								} while (resposta != 'S' && resposta != 's' && resposta != 'N' && resposta != 'n');
-
-								do {
-
-									System.out.println("Deseja alterar o tipo? (S/N)");
-									System.out.print("> ");
-									resposta = leia.next().charAt(0);
-									leia.nextLine();
-
-									if (resposta == 'S' || resposta == 's') {
-
-										int tipoIndex = 0;
-										boolean tipoValido = false;
-
-										while (!tipoValido) {
-
-											System.out.println("\nEscolha o novo tipo:");
-											System.out.println("1 - Manual de Operação");
-											System.out.println("2 - Procedimento de Segurança");
-											System.out.println("3 - Manutenção e Reparo");
-											System.out.println("4 - Testes e Diagnóstico");
-											System.out.println("5 - Manual de Conduta e Operações Setoriais");
-											System.out.print("> ");
-											tipoIndex = leia.nextInt();
-											leia.nextLine();
-
-											if (tipoIndex >= 1 && tipoIndex <= tiposPt.length) {
-
-												tipoOrientacaoPt[i] = tiposPt[tipoIndex - 1];
-												tipoValido = true;
-
-											} else {
-
-												System.out.println("\nInválido, tente novamente.");
-
-											}
-										}
-
-									} else if (resposta != 'N' && resposta != 'n') {
-
-										System.out.println("\nInválido, digite S ou N.");
-
-									}
-
-								} while (resposta != 'S' && resposta != 's' && resposta != 'N' && resposta != 'n');
-
-								do {
-
-									System.out.println("\nConteúdo atual em português: " + conteudoPt[i]);
-									System.out.println("Deseja alterar o conteúdo em português? (S/N)");
-									System.out.print("> ");
-									resposta = leia.nextLine().charAt(0);
-
-									if (resposta == 'S' || resposta == 's') {
-
-										System.out.println("Novo conteúdo em português:");
-										System.out.print("> ");
-										conteudoPt[i] = leia.nextLine();
-
-									} else if (resposta != 'N' && resposta != 'n') {
-
-										System.out.println("\nInválido, digite S ou N.");
-
-									}
-
-								} while (resposta != 'S' && resposta != 's' && resposta != 'N' && resposta != 'n');
-
-								System.out.println("\n✅ Edição concluída com sucesso!");
-								break;
-							}
-						}
-
-						if (!encontrado) {
-
-							System.out.println("\n❌ Título não encontrado!\n");
-
-						}
-
-					} while (!encontrado);
-
-				} else if (opcaoMenu == 4) {
-					System.out.println("\n=== EXCLUIR ORIENTAÇÃO ===");
-					System.out.println("Digite o título que deseja excluir:");
-					System.out.print("> ");
-					exclusao = leia.nextLine();
-
-					for (int i = 0; i < 15; i++) {
-						if (titulosPt[i] != null) {
-							if (titulosPt[i].equalsIgnoreCase(exclusao)) {
-								do {
-									System.out.println("Tem certeza que deseja excluir esta orientação?");
-									System.out.println("1- Sim;");
-									System.out.println("2- Não.");
-									System.out.print("> ");
-									respostaExclusao = leia.nextInt();
-									if (respostaExclusao > 2) {
-										System.out.println("\nInválido, tente novamente.\n");
-									}
-								} while (respostaExclusao > 2);
-
-								if (respostaExclusao == 1) {
-									for (int j = i; j < 14 - 1; j++) {
-										titulosPt[j] = titulosPt[j + 1];
-										codigo[j] = codigo[j + 1];
-										tipoOrientacaoPt[j] = tipoOrientacaoPt[j + 1];
-										conteudoPt[j] = conteudoPt[j + 1];
-									}
-
-									titulosPt[15 - 1] = null;
-									removido = true;
-									System.out.println("\n✅ Orientação excluída.");
-									break;
-								} else {
-									System.out.println("\n❌ Orientação não excluida.");
-								}
-							}
-
-						}
-
-					}
-				}
-			} while (opcaoMenu != 5);
-
-			if (opcaoMenu == 5) {
-				System.out.println("\nSaindo...");
-			}
-
-		}
-		if (idioma == 2) {
-			do {
-				System.out.println("");
-				System.out.println("Welcome to WegOne:");
-				System.out.println("");
-				System.out.println("=== MENU ===");
-				System.out.println("1. Register;");
-				System.out.println("2. Search;");
-				System.out.println("3. Edit;");
-				System.out.println("4. Delete;");
-				System.out.println("5. Exit.");
-				System.out.println("What would you like to access?");
-				System.out.print("> ");
-				opcaoMenu = leia.nextInt();
-				leia.nextLine();
-
-				if (opcaoMenu == 1) {
-					posicaoAtual = posicaoAtual + 1;
-
-					System.out.println("\n=== NEW GUIDANCE REGISTRATION ===");
-					System.out.println("Enter the title of the guidance:");
-					System.out.print("> ");
-					titulosEn[posicaoAtual] = leia.nextLine();
-					System.out.println("Enter the product code:");
-					System.out.print("> ");
-					codigo[posicaoAtual] = leia.nextInt();
-					do {
-						System.out.println("Select the type of guidance:");
-						System.out.println("1- Operation Manual;");
-						System.out.println("2- Safety Procedure;");
-						System.out.println("3- Maintenance and Repairs;");
-						System.out.println("4- Tests and Diagnostics;");
-						System.out.println("5- Conduct Manual and Sectorial Operations.");
-						System.out.print("> ");
-						tipo = leia.nextInt();
-						if (tipo > 5) {
-							System.out.println("\nInvalid, try again.");
-						}
-					} while (tipo > 5);
-					tipoOrientacaoEn[posicaoAtual] = tiposEn[tipo - 1];
-					leia.nextLine();
-					System.out.println("Enter the content of the guidance:");
-					System.out.print("> ");
-					conteudoEn[posicaoAtual] = leia.nextLine();
-					System.out.println("\n✅ Registration successful!");
-					System.out.println("Title:" + titulosEn[posicaoAtual]);
-					System.out.println("Code: " + codigo[posicaoAtual]);
-					System.out.println("Type: " + tipoOrientacaoEn[posicaoAtual]);
-					System.out.println("Content: " + conteudoEn[posicaoAtual]);
-
-				} else if (opcaoMenu == 2) {
-					encontrado = false;
-					do {
-						System.out.println("=== SEARCH GUIDANCE ===");
-						System.out.println("How would you like to search?");
-						System.out.println("1- Title;");
-						System.out.println("2- Code.");
-						System.out.print("> ");
-						tipoPesquisa = leia.nextInt();
-						if (tipoPesquisa > 2) {
-							System.out.println("\nInvalid, try again.\n");
-						}
-					} while (tipoPesquisa > 2);
-					leia.nextLine();
-
-					if (tipoPesquisa == 1) {
-						System.out.println("Enter the title you want to search for:");
-						System.out.print("> ");
-						pesquisa = leia.nextLine();
-
-						for (int i = 0; i < 15; i++) {
-							if (titulosEn[i] != null) {
-								if (titulosEn[i].equalsIgnoreCase(pesquisa)) {
-									System.out.println("\n✅ Title found!");
-									System.out.println("Title: " + titulosEn[i]);
-									System.out.println("Code: " + codigo[i]);
-									System.out.println("Type: " + tipoOrientacaoEn[i]);
-									System.out.println("Content: " + conteudoEn[i]);
-									encontrado = true;
-									break;
-								}
-							}
-						}
-						if (encontrado != true) {
-							System.out.println("\n❌ Title not found.");
-						}
-					} else if (tipoPesquisa == 2) {
-						System.out.println("Enter the code you want to search for:");
-						System.out.print("> ");
-						pesquisaCod = leia.nextInt();
-
-						for (int i = 0; i < 15; i++) {
-							if (codigo[i] == pesquisaCod) {
-								System.out.println("\n✅ Code found!");
-								System.out.println("Title: " + titulosEn[i]);
-								System.out.println("Code: " + codigo[i]);
-								System.out.println("Type: " + tipoOrientacaoEn[i]);
-								System.out.println("Content: " + conteudoEn[i]);
-								encontrado = true;
-								break;
-							}
-						}
-						if (encontrado != true) {
-							System.out.println("\n❌ Code not found.");
-						}
-					} else {
-						System.out.println("\nInvalid search type.");
-					}
-				} else if (opcaoMenu == 3) {
-
-					System.out.println("\n=== EDIT GUIDELINE ===");
-
-					String tituloBusca = "";
-					encontrado = false;
-
-					do {
-
-						System.out.println("Enter the title of the guideline you want to edit:");
-						System.out.print("> ");
-						tituloBusca = leia.nextLine();
-
-						for (int i = 0; i < 15; i++) {
-
-							if (titulosEn[i] != null && titulosEn[i].equalsIgnoreCase(tituloBusca)) {
-
-								encontrado = true;
-								System.out.println("\nTitle found!");
-								char resposta;
-
-								do {
-
-									System.out.println("\nCurrent English title: " + titulosEn[i]);
-									System.out.println("Change English title? (Y/N)");
-									System.out.print("> ");
-									resposta = leia.nextLine().charAt(0);
-
-									if (resposta == 'Y' || resposta == 'y') {
-
-										System.out.println("New English title:");
-										System.out.print("> ");
-										titulosEn[i] = leia.nextLine();
-
-									} else if (resposta != 'N' && resposta != 'n') {
-
-										System.out.println("Invalid, enter Y or N.\n");
-
-									}
-
-								} while (resposta != 'Y' && resposta != 'y' && resposta != 'N' && resposta != 'n');
-
-								do {
-
-									System.out.println("Change type? (Y/N)");
-									System.out.print("> ");
-									resposta = leia.next().charAt(0);
-									leia.nextLine();
-
-									if (resposta == 'Y' || resposta == 'y') {
-
-										int tipoIndex = 0;
-										boolean tipoValido = false;
-
-										while (!tipoValido) {
-
-											System.out.println("\nChoose the new type:");
-											System.out.println("1 - Operation Manual");
-											System.out.println("2 - Safety Procedure");
-											System.out.println("3 - Maintenance and Repairs");
-											System.out.println("4 - Testing and Diagnostics");
-											System.out.println("5 - Conduct and Sectoral Operations Manual");
-											System.out.print("> ");
-											tipoIndex = leia.nextInt();
-											leia.nextLine();
-
-											if (tipoIndex >= 1 && tipoIndex <= tiposEn.length) {
-
-												tipoOrientacaoEn[i] = tiposEn[tipoIndex - 1];
-												tipoValido = true;
-
-											} else {
-
-												System.out.println("Invalid, try again.");
-
-											}
-										}
-
-									} else if (resposta != 'N' && resposta != 'n') {
-
-										System.out.println("Invalid, enter Y or N.");
-
-									}
-
-								} while (resposta != 'Y' && resposta != 'y' && resposta != 'N' && resposta != 'n');
-
-								do {
-
-									System.out.println("\nCurrent English content: " + conteudoEn[i]);
-									System.out.println("Change English content? (Y/N)");
-									System.out.print("> ");
-									resposta = leia.nextLine().charAt(0);
-
-									if (resposta == 'Y' || resposta == 'y') {
-
-										System.out.println("New English content:");
-										System.out.print("> ");
-										conteudoEn[i] = leia.nextLine();
-
-									} else if (resposta != 'N' && resposta != 'n') {
-
-										System.out.println("Invalid, enter Y or N.");
-
-									}
-
-								} while (resposta != 'Y' && resposta != 'y' && resposta != 'N' && resposta != 'n');
-
-								System.out.println("\n✅ Edit completed successfully!");
-								break;
-							}
-						}
-
-						if (!encontrado) {
-
-							System.out.println("\n❌ Title not found!\n");
-
-						}
-					} while (!encontrado);
-
-				} else if (opcaoMenu == 4) {
-					System.out.println("\n=== DELETE GUIDANCE ===");
-					System.out.println("Enter the title you want to delete:");
-					System.out.print("> ");
-					exclusao = leia.nextLine();
-
-					for (int i = 0; i < 15; i++) {
-						if (titulosEn[i] != null) {
-							if (titulosEn[i].equalsIgnoreCase(exclusao)) {
-								do {
-									System.out.println("Are you sure you want to delete this guidance?");
-									System.out.println("1- Yes;");
-									System.out.println("2- No.");
-									System.out.print("> ");
-									respostaExclusao = leia.nextInt();
-									if (respostaExclusao > 2) {
-										System.out.println("\nInvalid, try again.\n");
-									}
-								} while (respostaExclusao > 2);
-
-								if (respostaExclusao == 1) {
-									for (int j = i; j < 14 - 1; j++) {
-										titulosEn[j] = titulosEn[j + 1];
-										codigo[j] = codigo[j + 1];
-										tipoOrientacaoEn[j] = tipoOrientacaoEn[j + 1];
-										conteudoEn[j] = conteudoEn[j + 1];
-									}
-
-									titulosEn[15 - 1] = null;
-									removido = true;
-									System.out.println("\n✅ Guidance removed");
-									break;
-								} else {
-									System.out.println("\n❌ Guidance not deleted.");
-								}
-							}
-
-						}
-
-					}
-				}
-			} while (opcaoMenu < 5);
-
-			if (opcaoMenu == 5) {
-				System.out.println("\nLeaving...");
-			}
-
-		}
-		if (idioma == 3) {
-			do {
-				System.out.println("");
-				System.out.println("Willkommen bei WegOne:");
-				System.out.println("");
-				System.out.println("=== MENÜ ===");
-				System.out.println("1. Registrieren;");
-				System.out.println("2. Suchen;");
-				System.out.println("3. Bearbeiten;");
-				System.out.println("4. Löschen;");
-				System.out.println("5. Beenden.");
-				System.out.println("Was möchten Sie zugreifen?");
-				System.out.print("> ");
-				opcaoMenu = leia.nextInt();
-				leia.nextLine();
-
-				if (opcaoMenu == 1) {
-					posicaoAtual = posicaoAtual + 1;
-
-					System.out.println("\n=== NEUE ANLEITUNG REGISTRIERUNG ===");
-					System.out.println("Geben Sie den Titel der Anleitung ein:");
-					System.out.print("> ");
-					titulosDe[posicaoAtual] = leia.nextLine();
-					System.out.println("Geben Sie den Produktcode ein:");
-					System.out.print("> ");
-					codigo[posicaoAtual] = leia.nextInt();
-					do {
-						System.out.println("Wählen Sie den Typ der Anleitung:");
-						System.out.println("1- Betriebsanleitung;");
-						System.out.println("2- Sicherheitsverfahren;");
-						System.out.println("3- Wartung und Reparaturen;");
-						System.out.println("4- Tests und Diagnosen;");
-						System.out.println("5- Verhaltenshandbuch und Sektorielle Operationen.");
-						System.out.print("> ");
-						tipo = leia.nextInt();
-						if (tipo > 5) {
-							System.out.println("\nUngültig, versuchen Sie es erneut.\n");
-						}
-					} while (tipo > 5);
-					tipoOrientacaoDe[posicaoAtual] = tiposDe[tipo - 1];
-					leia.nextLine();
-					System.out.println("Geben Sie den Inhalt der Anleitung ein:");
-					System.out.print("> ");
-					conteudoDe[posicaoAtual] = leia.nextLine();
-					System.out.println("\n✅ Registrierung erfolgreich!");
-					System.out.println("Titel: " + titulosDe[posicaoAtual]);
-					System.out.println("Code: " + codigo[posicaoAtual]);
-					System.out.println("Typ: " + tipoOrientacaoDe[posicaoAtual]);
-					System.out.println("Inhalt: " + conteudoDe[posicaoAtual]);
-
-				} else if (opcaoMenu == 2) {
-					encontrado = false;
-					do {
-						System.out.println("\n=== ANLEITUNG SUCHEN ===");
-						System.out.println("Wie möchten Sie suchen?");
-						System.out.println("1- Titel;");
-						System.out.println("2- Code.");
-						System.out.print("> ");
-						tipoPesquisa = leia.nextInt();
-						if (tipoPesquisa > 2) {
-							System.out.println("Ungültig, versuchen Sie es erneut.");
-						}
-					} while (tipoPesquisa > 2);
-					leia.nextLine();
-
-					if (tipoPesquisa == 1) {
-						System.out.println("Geben Sie den Titel ein, nach dem Sie suchen möchten:");
-						System.out.print("> ");
-						pesquisa = leia.nextLine();
-
-						for (int i = 0; i < 15; i++) {
-							if (titulosDe[i] != null) {
-								if (titulosDe[i].equalsIgnoreCase(pesquisa)) {
-									System.out.println("\n✅ Titel gefunden.");
-									System.out.println("Titel: " + titulosDe[i]);
-									System.out.println("Code: " + codigo[i]);
-									System.out.println("Typ: " + tipoOrientacaoDe[i]);
-									System.out.println("Inhalt: " + conteudoDe[i]);
-									encontrado = true;
-									break;
-								}
-							}
-						}
-						if (encontrado != true) {
-							System.out.println("\n❌ Titel nicht gefunden.");
-						}
-					} else if (tipoPesquisa == 2) {
-						System.out.println("Geben Sie den Code ein, nach dem Sie suchen möchten:");
-						System.out.print("> ");
-						pesquisaCod = leia.nextInt();
-
-						for (int i = 0; i < 15; i++) {
-							if (codigo[i] == pesquisaCod) {
-								System.out.println("\n✅ Code gefunden.");
-								System.out.println("Titel: " + titulosDe[i]);
-								System.out.println("Code: " + codigo[i]);
-								System.out.println("Typ: " + tipoOrientacaoDe[i]);
-								System.out.println("Inhalt: " + conteudoDe[i]);
-								encontrado = true;
-								break;
-							}
-						}
-						if (encontrado != true) {
-							System.out.println("\n❌ Code nicht gefunden.");
-						}
-					} else {
-						System.out.println("Ungültiger Suchtyp.");
-					}
-
-				} else if (opcaoMenu == 3) {
-					
-					System.out.println("\n=== RICHTLINIE BEARBEITEN ===");
-
-					String tituloBusca = "";
-					encontrado = false;
-
-					do {
-
-						System.out.println("Geben Sie den Titel der Richtlinie ein, die Sie bearbeiten möchten:");
-						System.out.print("> ");
-						tituloBusca = leia.nextLine();
-
-						for (int i = 0; i < 15; i++) {
-
-							if (titulosDe[i] != null && titulosDe[i].equalsIgnoreCase(tituloBusca)) {
-
-								encontrado = true;
-								System.out.println("\nTitel gefunden!");
-								char resposta;
-
-								do {
-
-									System.out.println("\nAktueller deutscher Titel: " + titulosDe[i]);
-									System.out.println("Titel auf Deutsch ändern? (J/N)");
-									System.out.print("> ");
-									resposta = leia.nextLine().charAt(0);
-
-									if (resposta == 'J' || resposta == 'j') {
-
-										System.out.println("Neuer deutscher Titel:");
-										System.out.print("> ");
-										titulosDe[i] = leia.nextLine();
-
-									} else if (resposta != 'N' && resposta != 'n') {
-
-										System.out.println("Ungültige, geben Sie J oder N ein.\n");
-
-									}
-
-								} while (resposta != 'J' && resposta != 'j' && resposta != 'N' && resposta != 'n');
-
-								do {
-
-									System.out.println("Typ ändern? (J/N)");
-									System.out.print("> ");
-									resposta = leia.next().charAt(0);
-									leia.nextLine();
-
-									if (resposta == 'J' || resposta == 'j') {
-
-										int tipoIndex = 0;
-										boolean tipoValido = false;
-
-										while (!tipoValido) {
-
-											System.out.println("\nWählen Sie den neuen Typ:");
-											System.out.println("1 - Bedienungsanleitung");
-											System.out.println("2 - Sicherheitsverfahren");
-											System.out.println("3 - Wartung und Reparatur");
-											System.out.println("4 - Tests und Diagnose");
-											System.out.println("5 - Verhaltens- und Betriebsrichtlinien");
-											System.out.print("> ");
-											tipoIndex = leia.nextInt();
-											leia.nextLine();
-
-											if (tipoIndex >= 1 && tipoIndex <= tiposEn.length) {
-
-												tipoOrientacaoEn[i] = tiposEn[tipoIndex - 1];
-												tipoValido = true;
-
-											} else {
-
-												System.out.println("Ungültig, versuchen Sie es erneut.");
-
-											}
-										}
-
-									} else if (resposta != 'N' && resposta != 'n') {
-
-										System.out.println("Ungültige, geben Sie J oder N ein.\n");
-
-									}
-
-								} while (resposta != 'J' && resposta != 'j' && resposta != 'N' && resposta != 'n');
-
-								do {
-
-									System.out.println("\nAktueller deutscher Inhalt: " + conteudoDe[i]);
-									System.out.println("Inhalt auf Deutsch ändern? (J/N)");
-									System.out.print("> ");
-									resposta = leia.nextLine().charAt(0);
-
-									if (resposta == 'J' || resposta == 'j') {
-
-										System.out.println("Neuer deutscher Inhalt:");
-										System.out.print("> ");
-										conteudoDe[i] = leia.nextLine();
-
-									} else if (resposta != 'N' && resposta != 'n') {
-
-										System.out.println("Ungültige, geben Sie J oder N ein.\n");
-
-									}
-
-								} while (resposta != 'J' && resposta != 'j' && resposta != 'N' && resposta != 'n');
-
-								System.out.println("\n✅ Bearbeitung erfolgreich abgeschlossen!");
-								break;
-							}
-						}
-
-						if (!encontrado) {
-
-							System.out.println("\n❌ Titel nicht gefunden!\n");
-
-						}
-
-					} while (!encontrado);
-
-				} else if (opcaoMenu == 4) {
-					System.out.println("\n=== ANLEITUNG LÖSCHEN ===");
-					System.out.println("Geben Sie den Titel ein, den Sie löschen möchten:");
-					System.out.print("> ");
-					exclusao = leia.nextLine();
-
-					for (int i = 0; i < 15; i++) {
-						if (titulosDe[i] != null) {
-							if (titulosDe[i].equalsIgnoreCase(exclusao)) {
-								do {
-									System.out.println("Sind Sie sicher, dass Sie diese Anleitung löschen möchten?");
-									System.out.println("1- Ja;");
-									System.out.println("2- Nein.");
-									System.out.print("> ");
-									respostaExclusao = leia.nextInt();
-									if (respostaExclusao > 2) {
-										System.out.println("\nUngültig, versuchen Sie es erneut.\n");
-									}
-								} while (respostaExclusao > 2);
-
-								if (respostaExclusao == 1) {
-									for (int j = i; j < 14 - 1; j++) {
-										titulosDe[j] = titulosDe[j + 1];
-										codigo[j] = codigo[j + 1];
-										tipoOrientacaoDe[j] = tipoOrientacaoDe[j + 1];
-										conteudoDe[j] = conteudoDe[j + 1];
-									}
-
-									titulosDe[15 - 1] = null;
-									removido = true;
-									System.out.println("\n✅ Anleitung entfernt.");
-									break;
-								} else {
-									System.out.println("\n❌ Orientação não excluida.");
-									
-								}
-							}
-
-						}
-
-					}
-				}
-			} while (opcaoMenu != 5);
-
-			if (opcaoMenu == 5) {
-				System.out.println("\nVerlassen...");
-			}
-		}
-	}
-}
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Seleção de idioma
+        System.out.println("\n=== WegOne ===");
+        System.out.println("Selecione o idioma / Select the language / Wählen Sie die Sprache:");
+        System.out.println("1. Português");
+        System.out.println("2. English");
+        System.out.println("3. Deutsch");
+        System.out.print("\n> ");
+        
+        String language = scanner.nextLine();
+        
+        switch (language) {
+            case "1": // Português
+                executarEmPortugues(scanner);
+                break;
+            case "2": // English
+                executarEmIngles(scanner);
+                break;
+            case "3": // Deutsch
+                executarEmAlemao(scanner);
+                break;
+            default:
+                executarEmPortugues(scanner);
+        }
+        
+        scanner.close();
+    }
+
+    private static void executarEmPortugues(Scanner scanner) {
+        int opcao;
+        do {
+            System.out.println("\n=== WegOne - Sistema de Gerenciamento de Manuais ===");
+            System.out.println("1. Cadastrar Manual");
+            System.out.println("2. Consultar Manuais");
+            System.out.println("3. Editar Manual");
+            System.out.println("4. Excluir Manual");
+            System.out.println("5. Sair");
+            System.out.print("\nEscolha uma opção: ");
+            
+            opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcao) {
+                case 1:
+                    cadastrarManualPT(scanner);
+                    break;
+                case 2:
+                    consultarManuaisPT(scanner);
+                    break;
+                case 3:
+                    editarManualPT(scanner);
+                    break;
+                case 4:
+                    excluirManualPT(scanner);
+                    break;
+                case 5:
+                    System.out.println("\nSaindo do sistema...");
+                    break;
+                default:
+                    System.out.println("\n❌ Opção inválida!");
+            }
+        } while (opcao != 5);
+    }
+
+    private static void executarEmIngles(Scanner scanner) {
+        int option;
+        do {
+            System.out.println("\n=== WegOne - Manual Management System ===");
+            System.out.println("1. Register Manual");
+            System.out.println("2. Search Manuals");
+            System.out.println("3. Edit Manual");
+            System.out.println("4. Delete Manual");
+            System.out.println("5. Exit");
+            System.out.print("\nChoose an option: ");
+            
+            option = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (option) {
+                case 1:
+                    cadastrarManualEN(scanner);
+                    break;
+                case 2:
+                    consultarManuaisEN(scanner);
+                    break;
+                case 3:
+                    editarManualEN(scanner);
+                    break;
+                case 4:
+                    excluirManualEN(scanner);
+                    break;
+                case 5:
+                    System.out.println("\nExiting the system...");
+                    break;
+                default:
+                    System.out.println("\n❌ Invalid option!");
+            }
+        } while (option != 5);
+    }
+
+    private static void executarEmAlemao(Scanner scanner) {
+        int option;
+        do {
+            System.out.println("\n=== WegOne - Handbuchverwaltungssystem ===");
+            System.out.println("1. Handbuch registrieren");
+            System.out.println("2. Handbücher suchen");
+            System.out.println("3. Handbuch bearbeiten");
+            System.out.println("4. Handbuch löschen");
+            System.out.println("5. Beenden");
+            System.out.print("\nWählen Sie eine Option: ");
+            
+            option = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (option) {
+                case 1:
+                    cadastrarManualDE(scanner);
+                    break;
+                case 2:
+                    consultarManuaisDE(scanner);
+                    break;
+                case 3:
+                    editarManualDE(scanner);
+                    break;
+                case 4:
+                    excluirManualDE(scanner);
+                    break;
+                case 5:
+                    System.out.println("\nSystem wird beendet...");
+                    break;
+                default:
+                    System.out.println("\n❌ Ungültige Option!");
+            }
+        } while (option != 5);
+    }
+
+    // Métodos em Português
+    private static void cadastrarManualPT(Scanner scanner) {
+        try (Connection conn = Conexao.conectar()) {
+            System.out.println("\n=== Cadastro de Manual ===");
+            
+            System.out.print("Digite o título do manual: ");
+            String titulo = scanner.nextLine();
+            
+            System.out.print("Digite o nome do autor: ");
+            String autor = scanner.nextLine();
+            
+            System.out.print("Digite o texto do manual: ");
+            String texto = scanner.nextLine();
+
+            System.out.println("\nSelecione o tipo de manual:");
+            System.out.println("1. Manual de conduta operacional");
+            System.out.println("2. Manual de diagnósticos");
+            System.out.println("3. Manual de manutenção");
+            System.out.println("4. Manual de operação");
+            System.out.println("5. Manual de segurança");
+            System.out.print("Opção: ");
+            int tipoOpcao = scanner.nextInt();
+            scanner.nextLine();
+            
+            String tipoManual = getTipoManualPT(tipoOpcao);
+            
+            String sql = "INSERT INTO manuais (titulo, autor, texto, tipoManual) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, titulo);
+                stmt.setString(2, autor);
+                stmt.setString(3, texto);
+                stmt.setString(4, tipoManual);
+                stmt.executeUpdate();
+                System.out.println("\n✅ Manual cadastrado com sucesso!");
+            }
+        } catch (SQLException e) {
+            System.out.println("\n❌ Erro ao cadastrar manual: " + e.getMessage());
+        }
+    }
+
+    private static void consultarManuaisPT(Scanner scanner) {
+        try (Connection conn = Conexao.conectar()) {
+            System.out.println("\n=== Consulta de Manuais ===");
+            System.out.println("1. Buscar por título");
+            System.out.println("2. Buscar por autor");
+            System.out.println("3. Buscar por tipo");
+            System.out.println("4. Listar todos");
+            System.out.print("Escolha uma opção: ");
+            
+            int opcao = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (opcao) {
+                case 1:
+                    buscarPorTituloPT(scanner, conn);
+                    break;
+                case 2:
+                    buscarPorAutorPT(scanner, conn);
+                    break;
+                case 3:
+                    buscarPorTipoPT(scanner, conn);
+                    break;
+                case 4:
+                    listarTodosPT(conn);
+                    break;
+                default:
+                    System.out.println("\n❌ Opção inválida!");
+            }
+        } catch (SQLException e) {
+            System.out.println("\n❌ Erro na consulta: " + e.getMessage());
+        }
+    }
+
+    // Métodos em Inglês
+    private static void cadastrarManualEN(Scanner scanner) {
+        try (Connection conn = Conexao.conectar()) {
+            System.out.println("\n=== Register Manual ===");
+            
+            System.out.print("Enter the manual title: ");
+            String titulo = scanner.nextLine();
+            
+            System.out.print("Enter the author name: ");
+            String autor = scanner.nextLine();
+            
+            System.out.print("Enter the manual text: ");
+            String texto = scanner.nextLine();
+
+            System.out.println("\nSelect the manual type:");
+            System.out.println("1. Operational Conduct Manual");
+            System.out.println("2. Diagnostic Manual");
+            System.out.println("3. Maintenance Manual");
+            System.out.println("4. Operation Manual");
+            System.out.println("5. Safety Manual");
+            System.out.print("Option: ");
+            int tipoOpcao = scanner.nextInt();
+            scanner.nextLine();
+            
+            String tipoManual = getTipoManualEN(tipoOpcao);
+            
+            String sql = "INSERT INTO manuais (titulo, autor, texto, tipoManual) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, titulo);
+                stmt.setString(2, autor);
+                stmt.setString(3, texto);
+                stmt.setString(4, tipoManual);
+                stmt.executeUpdate();
+                System.out.println("\n✅ Manual registered successfully!");
+            }
+        } catch (SQLException e) {
+            System.out.println("\n❌ Error registering manual: " + e.getMessage());
+        }
+    }
+
+    private static void consultarManuaisEN(Scanner scanner) {
+        try (Connection conn = Conexao.conectar()) {
+            System.out.println("\n=== Search Manuals ===");
+            System.out.println("1. Search by title");
+            System.out.println("2. Search by author");
+            System.out.println("3. Search by type");
+            System.out.println("4. List all");
+            System.out.print("Choose an option: ");
+            
+            int option = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (option) {
+                case 1:
+                    buscarPorTituloEN(scanner, conn);
+                    break;
+                case 2:
+                    buscarPorAutorEN(scanner, conn);
+                    break;
+                case 3:
+                    buscarPorTipoEN(scanner, conn);
+                    break;
+                case 4:
+                    listarTodosEN(conn);
+                    break;
+                default:
+                    System.out.println("\n❌ Invalid option!");
+            }
+        } catch (SQLException e) {
+            System.out.println("\n❌ Error in search: " + e.getMessage());
+        }
+    }
+
+    // Métodos em Alemão
+    private static void cadastrarManualDE(Scanner scanner) {
+        try (Connection conn = Conexao.conectar()) {
+            System.out.println("\n=== Handbuch registrieren ===");
+            
+            System.out.print("Geben Sie den Titel des Handbuchs ein: ");
+            String titulo = scanner.nextLine();
+            
+            System.out.print("Geben Sie den Namen des Autors ein: ");
+            String autor = scanner.nextLine();
+            
+            System.out.print("Geben Sie den Text des Handbuchs ein: ");
+            String texto = scanner.nextLine();
+
+            System.out.println("\nWählen Sie den Handbuchtyp:");
+            System.out.println("1. Betriebsführungshandbuch");
+            System.out.println("2. Diagnosehandbuch");
+            System.out.println("3. Wartungshandbuch");
+            System.out.println("4. Bedienungshandbuch");
+            System.out.println("5. Sicherheitshandbuch");
+            System.out.print("Option: ");
+            int tipoOpcao = scanner.nextInt();
+            scanner.nextLine();
+            
+            String tipoManual = getTipoManualDE(tipoOpcao);
+            
+            String sql = "INSERT INTO manuais (titulo, autor, texto, tipoManual) VALUES (?, ?, ?, ?)";
+            try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                stmt.setString(1, titulo);
+                stmt.setString(2, autor);
+                stmt.setString(3, texto);
+                stmt.setString(4, tipoManual);
+                stmt.executeUpdate();
+                System.out.println("\n✅ Handbuch erfolgreich registriert!");
+            }
+        } catch (SQLException e) {
+            System.out.println("\n❌ Fehler beim Registrieren des Handbuchs: " + e.getMessage());
+        }
+    }
+
+    private static void consultarManuaisDE(Scanner scanner) {
+        try (Connection conn = Conexao.conectar()) {
+            System.out.println("\n=== Handbücher suchen ===");
+            System.out.println("1. Nach Titel suchen");
+            System.out.println("2. Nach Autor suchen");
+            System.out.println("3. Nach Typ suchen");
+            System.out.println("4. Alle auflisten");
+            System.out.print("Wählen Sie eine Option: ");
+            
+            int option = scanner.nextInt();
+            scanner.nextLine();
+
+            switch (option) {
+                case 1:
+                    buscarPorTituloDE(scanner, conn);
+                    break;
+                case 2:
+                    buscarPorAutorDE(scanner, conn);
+                    break;
+                case 3:
+                    buscarPorTipoDE(scanner, conn);
+                    break;
+                case 4:
+                    listarTodosDE(conn);
+                    break;
+                default:
+                    System.out.println("\n❌ Ungültige Option!");
+            }
+        } catch (SQLException e) {
+            System.out.println("\n❌ Fehler bei der Suche: " + e.getMessage());
+        }
+    }
+
+    // Métodos auxiliares para cada idioma
+    private static String getTipoManualPT(int tipo) {
+        switch (tipo) {
+            case 1: return "Manual de conduta operacional";
+            case 2: return "Manual de diagnósticos";
+            case 3: return "Manual de manutenção";
+            case 4: return "Manual de operação";
+            case 5: return "Manual de segurança";
+            default: return "Tipo Desconhecido";
+        }
+    }
+
+    private static String getTipoManualEN(int tipo) {
+        switch (tipo) {
+            case 1: return "Operational Conduct Manual";
+            case 2: return "Diagnostic Manual";
+            case 3: return "Maintenance Manual";
+            case 4: return "Operation Manual";
+            case 5: return "Safety Manual";
+            default: return "Unknown Type";
+        }
+    }
+
+    private static String getTipoManualDE(int tipo) {
+        switch (tipo) {
+            case 1: return "Betriebsführungshandbuch";
+            case 2: return "Diagnosehandbuch";
+            case 3: return "Wartungshandbuch";
+            case 4: return "Bedienungshandbuch";
+            case 5: return "Sicherheitshandbuch";
+            default: return "Unbekannter Typ";
+        }
+    }
+
+    // Métodos de busca em Português
+    private static void buscarPorTituloPT(Scanner scanner, Connection conn) throws SQLException {
+        System.out.print("\nDigite o título do manual: ");
+        String titulo = scanner.nextLine();
+        
+        String sql = "SELECT * FROM manuais WHERE titulo LIKE ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "%" + titulo + "%");
+            ResultSet rs = stmt.executeQuery();
+            exibirResultadosPT(rs);
+        }
+    }
+
+    private static void buscarPorAutorPT(Scanner scanner, Connection conn) throws SQLException {
+        System.out.print("\nDigite o nome do autor: ");
+        String autor = scanner.nextLine();
+        
+        String sql = "SELECT * FROM manuais WHERE autor LIKE ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "%" + autor + "%");
+            ResultSet rs = stmt.executeQuery();
+            exibirResultadosPT(rs);
+        }
+    }
+
+    private static void buscarPorTipoPT(Scanner scanner, Connection conn) throws SQLException {
+        System.out.println("\nSelecione o tipo de manual:");
+        System.out.println("1. Manual de conduta operacional");
+        System.out.println("2. Manual de diagnósticos");
+        System.out.println("3. Manual de manutenção");
+        System.out.println("4. Manual de operação");
+        System.out.println("5. Manual de segurança");
+        System.out.print("Opção: ");
+        int tipoOpcao = scanner.nextInt();
+        
+        String tipoManual = getTipoManualPT(tipoOpcao);
+        String sql = "SELECT * FROM manuais WHERE tipoManual = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, tipoManual);
+            ResultSet rs = stmt.executeQuery();
+            exibirResultadosPT(rs);
+        }
+    }
+
+    private static void listarTodosPT(Connection conn) throws SQLException {
+        String sql = "SELECT * FROM manuais ORDER BY titulo";
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            exibirResultadosPT(rs);
+        }
+    }
+
+    private static void exibirResultadosPT(ResultSet rs) throws SQLException {
+        boolean encontrou = false;
+        while (rs.next()) {
+            if (!encontrou) {
+                System.out.println("\n=== Manuais Encontrados ===");
+                encontrou = true;
+            }
+            System.out.println("\nTítulo: " + rs.getString("titulo"));
+            System.out.println("Autor: " + rs.getString("autor"));
+            System.out.println("Tipo: " + rs.getString("tipoManual"));
+            System.out.println("Data de Publicação: " + rs.getTimestamp("data_publicacao"));
+            System.out.println("Texto: " + rs.getString("texto"));
+            System.out.println("------------------------");
+        }
+        
+        if (!encontrou) {
+            System.out.println("\n❌ Nenhum manual encontrado.");
+        }
+    }
+
+    // Métodos de busca em Inglês
+    private static void buscarPorTituloEN(Scanner scanner, Connection conn) throws SQLException {
+        System.out.print("\nEnter the manual title: ");
+        String titulo = scanner.nextLine();
+        
+        String sql = "SELECT * FROM manuais WHERE titulo LIKE ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "%" + titulo + "%");
+            ResultSet rs = stmt.executeQuery();
+            exibirResultadosEN(rs);
+        }
+    }
+
+    private static void buscarPorAutorEN(Scanner scanner, Connection conn) throws SQLException {
+        System.out.print("\nEnter the author name: ");
+        String autor = scanner.nextLine();
+        
+        String sql = "SELECT * FROM manuais WHERE autor LIKE ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "%" + autor + "%");
+            ResultSet rs = stmt.executeQuery();
+            exibirResultadosEN(rs);
+        }
+    }
+
+    private static void buscarPorTipoEN(Scanner scanner, Connection conn) throws SQLException {
+        System.out.println("\nSelect the manual type:");
+        System.out.println("1. Operational Conduct Manual");
+        System.out.println("2. Diagnostic Manual");
+        System.out.println("3. Maintenance Manual");
+        System.out.println("4. Operation Manual");
+        System.out.println("5. Safety Manual");
+        System.out.print("Option: ");
+        int tipoOpcao = scanner.nextInt();
+        
+        String tipoManual = getTipoManualEN(tipoOpcao);
+        String sql = "SELECT * FROM manuais WHERE tipoManual = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, tipoManual);
+            ResultSet rs = stmt.executeQuery();
+            exibirResultadosEN(rs);
+        }
+    }
+
+    private static void listarTodosEN(Connection conn) throws SQLException {
+        String sql = "SELECT * FROM manuais ORDER BY titulo";
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            exibirResultadosEN(rs);
+        }
+    }
+
+    private static void exibirResultadosEN(ResultSet rs) throws SQLException {
+        boolean found = false;
+        while (rs.next()) {
+            if (!found) {
+                System.out.println("\n=== Found Manuals ===");
+                found = true;
+            }
+            System.out.println("\nTitle: " + rs.getString("titulo"));
+            System.out.println("Author: " + rs.getString("autor"));
+            System.out.println("Type: " + rs.getString("tipoManual"));
+            System.out.println("Publication Date: " + rs.getTimestamp("data_publicacao"));
+            System.out.println("Text: " + rs.getString("texto"));
+            System.out.println("------------------------");
+        }
+        
+        if (!found) {
+            System.out.println("\n❌ No manuals found.");
+        }
+    }
+
+    // Métodos de busca em Alemão
+    private static void buscarPorTituloDE(Scanner scanner, Connection conn) throws SQLException {
+        System.out.print("\nGeben Sie den Titel des Handbuchs ein: ");
+        String titulo = scanner.nextLine();
+        
+        String sql = "SELECT * FROM manuais WHERE titulo LIKE ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "%" + titulo + "%");
+            ResultSet rs = stmt.executeQuery();
+            exibirResultadosDE(rs);
+        }
+    }
+
+    private static void buscarPorAutorDE(Scanner scanner, Connection conn) throws SQLException {
+        System.out.print("\nGeben Sie den Namen des Autors ein: ");
+        String autor = scanner.nextLine();
+        
+        String sql = "SELECT * FROM manuais WHERE autor LIKE ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, "%" + autor + "%");
+            ResultSet rs = stmt.executeQuery();
+            exibirResultadosDE(rs);
+        }
+    }
+
+    private static void buscarPorTipoDE(Scanner scanner, Connection conn) throws SQLException {
+        System.out.println("\nWählen Sie den Handbuchtyp:");
+        System.out.println("1. Betriebsführungshandbuch");
+        System.out.println("2. Diagnosehandbuch");
+        System.out.println("3. Wartungshandbuch");
+        System.out.println("4. Bedienungshandbuch");
+        System.out.println("5. Sicherheitshandbuch");
+        System.out.print("Option: ");
+        int tipoOpcao = scanner.nextInt();
+        
+        String tipoManual = getTipoManualDE(tipoOpcao);
+        String sql = "SELECT * FROM manuais WHERE tipoManual = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, tipoManual);
+            ResultSet rs = stmt.executeQuery();
+            exibirResultadosDE(rs);
+        }
+    }
+
+    private static void listarTodosDE(Connection conn) throws SQLException {
+        String sql = "SELECT * FROM manuais ORDER BY titulo";
+        try (PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            exibirResultadosDE(rs);
+        }
+    }
+
+    private static void exibirResultadosDE(ResultSet rs) throws SQLException {
+        boolean gefunden = false;
+        while (rs.next()) {
+            if (!gefunden) {
+                System.out.println("\n=== Gefundene Handbücher ===");
+                gefunden = true;
+            }
+            System.out.println("\nTitel: " + rs.getString("titulo"));
+            System.out.println("Autor: " + rs.getString("autor"));
+            System.out.println("Typ: " + rs.getString("tipoManual"));
+            System.out.println("Veröffentlichungsdatum: " + rs.getTimestamp("data_publicacao"));
+            System.out.println("Text: " + rs.getString("texto"));
+            System.out.println("------------------------");
+        }
+        
+        if (!gefunden) {
+            System.out.println("\n❌ Keine Handbücher gefunden.");
+        }
+    }
+
+    // Métodos de edição
+    private static void editarManualPT(Scanner scanner) {
+        try (Connection conn = Conexao.conectar()) {
+            System.out.println("\n=== Edição de Manual ===");
+            System.out.print("Digite o título do manual que deseja editar: ");
+            String tituloAntigo = scanner.nextLine();
+
+            String sqlBusca = "SELECT * FROM manuais WHERE titulo = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sqlBusca)) {
+                stmt.setString(1, tituloAntigo);
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    System.out.println("\nManual encontrado!");
+                    System.out.println("Título atual: " + rs.getString("titulo"));
+                    System.out.println("Autor atual: " + rs.getString("autor"));
+                    System.out.println("Tipo atual: " + rs.getString("tipoManual"));
+                    
+                    System.out.print("\nNovo título (ou Enter para manter): ");
+                    String novoTitulo = scanner.nextLine();
+                    if (novoTitulo.isEmpty()) novoTitulo = rs.getString("titulo");
+
+                    System.out.print("Novo autor (ou Enter para manter): ");
+                    String novoAutor = scanner.nextLine();
+                    if (novoAutor.isEmpty()) novoAutor = rs.getString("autor");
+
+                    System.out.println("\nNovo tipo de manual:");
+                    System.out.println("1. Manual de conduta operacional");
+                    System.out.println("2. Manual de diagnósticos");
+                    System.out.println("3. Manual de manutenção");
+                    System.out.println("4. Manual de operação");
+                    System.out.println("5. Manual de segurança");
+                    System.out.println("0. Manter o tipo atual");
+                    System.out.print("Opção: ");
+                    int tipoOpcao = scanner.nextInt();
+                    scanner.nextLine();
+                    
+                    String novoTipo = tipoOpcao == 0 ? rs.getString("tipoManual") : getTipoManualPT(tipoOpcao);
+
+                    System.out.print("\nNovo texto (ou Enter para manter): ");
+                    String novoTexto = scanner.nextLine();
+                    if (novoTexto.isEmpty()) novoTexto = rs.getString("texto");
+
+                    String sqlUpdate = "UPDATE manuais SET titulo = ?, autor = ?, tipoManual = ?, texto = ? WHERE titulo = ?";
+                    try (PreparedStatement updateStmt = conn.prepareStatement(sqlUpdate)) {
+                        updateStmt.setString(1, novoTitulo);
+                        updateStmt.setString(2, novoAutor);
+                        updateStmt.setString(3, novoTipo);
+                        updateStmt.setString(4, novoTexto);
+                        updateStmt.setString(5, tituloAntigo);
+                        updateStmt.executeUpdate();
+                        System.out.println("\n✅ Manual atualizado com sucesso!");
+                    }
+                } else {
+                    System.out.println("\n❌ Manual não encontrado!");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("\n❌ Erro ao editar manual: " + e.getMessage());
+        }
+    }
+
+    private static void editarManualEN(Scanner scanner) {
+        try (Connection conn = Conexao.conectar()) {
+            System.out.println("\n=== Edit Manual ===");
+            System.out.print("Enter the title of the manual you want to edit: ");
+            String oldTitle = scanner.nextLine();
+
+            String sqlSearch = "SELECT * FROM manuais WHERE titulo = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sqlSearch)) {
+                stmt.setString(1, oldTitle);
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    System.out.println("\nManual found!");
+                    System.out.println("Current title: " + rs.getString("titulo"));
+                    System.out.println("Current author: " + rs.getString("autor"));
+                    System.out.println("Current type: " + rs.getString("tipoManual"));
+                    
+                    System.out.print("\nNew title (or Enter to keep current): ");
+                    String newTitle = scanner.nextLine();
+                    if (newTitle.isEmpty()) newTitle = rs.getString("titulo");
+
+                    System.out.print("New author (or Enter to keep current): ");
+                    String newAuthor = scanner.nextLine();
+                    if (newAuthor.isEmpty()) newAuthor = rs.getString("autor");
+
+                    System.out.println("\nNew manual type:");
+                    System.out.println("1. Operational Conduct Manual");
+                    System.out.println("2. Diagnostic Manual");
+                    System.out.println("3. Maintenance Manual");
+                    System.out.println("4. Operation Manual");
+                    System.out.println("5. Safety Manual");
+                    System.out.println("0. Keep current type");
+                    System.out.print("Option: ");
+                    int typeOption = scanner.nextInt();
+                    scanner.nextLine();
+                    
+                    String newType = typeOption == 0 ? rs.getString("tipoManual") : getTipoManualEN(typeOption);
+
+                    System.out.print("\nNew text (or Enter to keep current): ");
+                    String newText = scanner.nextLine();
+                    if (newText.isEmpty()) newText = rs.getString("texto");
+
+                    String sqlUpdate = "UPDATE manuais SET titulo = ?, autor = ?, tipoManual = ?, texto = ? WHERE titulo = ?";
+                    try (PreparedStatement updateStmt = conn.prepareStatement(sqlUpdate)) {
+                        updateStmt.setString(1, newTitle);
+                        updateStmt.setString(2, newAuthor);
+                        updateStmt.setString(3, newType);
+                        updateStmt.setString(4, newText);
+                        updateStmt.setString(5, oldTitle);
+                        updateStmt.executeUpdate();
+                        System.out.println("\n✅ Manual updated successfully!");
+                    }
+                } else {
+                    System.out.println("\n❌ Manual not found!");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("\n❌ Error editing manual: " + e.getMessage());
+        }
+    }
+
+    private static void editarManualDE(Scanner scanner) {
+        try (Connection conn = Conexao.conectar()) {
+            System.out.println("\n=== Handbuch bearbeiten ===");
+            System.out.print("Geben Sie den Titel des Handbuchs ein, das Sie bearbeiten möchten: ");
+            String alterTitel = scanner.nextLine();
+
+            String sqlSuche = "SELECT * FROM manuais WHERE titulo = ?";
+            try (PreparedStatement stmt = conn.prepareStatement(sqlSuche)) {
+                stmt.setString(1, alterTitel);
+                ResultSet rs = stmt.executeQuery();
+
+                if (rs.next()) {
+                    System.out.println("\nHandbuch gefunden!");
+                    System.out.println("Aktueller Titel: " + rs.getString("titulo"));
+                    System.out.println("Aktueller Autor: " + rs.getString("autor"));
+                    System.out.println("Aktueller Typ: " + rs.getString("tipoManual"));
+                    
+                    System.out.print("\nNeuer Titel (oder Enter zum Beibehalten): ");
+                    String neuerTitel = scanner.nextLine();
+                    if (neuerTitel.isEmpty()) neuerTitel = rs.getString("titulo");
+
+                    System.out.print("Neuer Autor (oder Enter zum Beibehalten): ");
+                    String neuerAutor = scanner.nextLine();
+                    if (neuerAutor.isEmpty()) neuerAutor = rs.getString("autor");
+
+                    System.out.println("\nNeuer Handbuchtyp:");
+                    System.out.println("1. Betriebsführungshandbuch");
+                    System.out.println("2. Diagnosehandbuch");
+                    System.out.println("3. Wartungshandbuch");
+                    System.out.println("4. Bedienungshandbuch");
+                    System.out.println("5. Sicherheitshandbuch");
+                    System.out.println("0. Aktuellen Typ beibehalten");
+                    System.out.print("Option: ");
+                    int typOption = scanner.nextInt();
+                    scanner.nextLine();
+                    
+                    String neuerTyp = typOption == 0 ? rs.getString("tipoManual") : getTipoManualDE(typOption);
+
+                    System.out.print("\nNeuer Text (oder Enter zum Beibehalten): ");
+                    String neuerText = scanner.nextLine();
+                    if (neuerText.isEmpty()) neuerText = rs.getString("texto");
+
+                    String sqlUpdate = "UPDATE manuais SET titulo = ?, autor = ?, tipoManual = ?, texto = ? WHERE titulo = ?";
+                    try (PreparedStatement updateStmt = conn.prepareStatement(sqlUpdate)) {
+                        updateStmt.setString(1, neuerTitel);
+                        updateStmt.setString(2, neuerAutor);
+                        updateStmt.setString(3, neuerTyp);
+                        updateStmt.setString(4, neuerText);
+                        updateStmt.setString(5, alterTitel);
+                        updateStmt.executeUpdate();
+                        System.out.println("\n✅ Handbuch erfolgreich aktualisiert!");
+                    }
+                } else {
+                    System.out.println("\n❌ Handbuch nicht gefunden!");
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("\n❌ Fehler beim Bearbeiten des Handbuchs: " + e.getMessage());
+        }
+    }
+
+    // Métodos de exclusão
+    private static void excluirManualPT(Scanner scanner) {
+        try (Connection conn = Conexao.conectar()) {
+            System.out.println("\n=== Exclusão de Manual ===");
+            System.out.print("Digite o título do manual que deseja excluir: ");
+            String titulo = scanner.nextLine();
+
+            System.out.print("\nTem certeza que deseja excluir o manual? (S/N): ");
+            String confirmacao = scanner.nextLine();
+
+            if (confirmacao.equalsIgnoreCase("S")) {
+                String sql = "DELETE FROM manuais WHERE titulo = ?";
+                try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                    stmt.setString(1, titulo);
+                    int linhasAfetadas = stmt.executeUpdate();
+                    
+                    if (linhasAfetadas > 0) {
+                        System.out.println("\n✅ Manual excluído com sucesso!");
+                    } else {
+                        System.out.println("\n❌ Manual não encontrado!");
+                    }
+                }
+            } else {
+                System.out.println("\nOperação cancelada.");
+            }
+        } catch (SQLException e) {
+            System.out.println("\n❌ Erro ao excluir manual: " + e.getMessage());
+        }
+    }
+
+    private static void excluirManualEN(Scanner scanner) {
+        try (Connection conn = Conexao.conectar()) {
+            System.out.println("\n=== Delete Manual ===");
+            System.out.print("Enter the title of the manual you want to delete: ");
+            String title = scanner.nextLine();
+
+            System.out.print("\nAre you sure you want to delete this manual? (Y/N): ");
+            String confirmation = scanner.nextLine();
+
+            if (confirmation.equalsIgnoreCase("Y")) {
+                String sql = "DELETE FROM manuais WHERE titulo = ?";
+                try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                    stmt.setString(1, title);
+                    int rowsAffected = stmt.executeUpdate();
+                    
+                    if (rowsAffected > 0) {
+                        System.out.println("\n✅ Manual deleted successfully!");
+                    } else {
+                        System.out.println("\n❌ Manual not found!");
+                    }
+                }
+            } else {
+                System.out.println("\nOperation cancelled.");
+            }
+        } catch (SQLException e) {
+            System.out.println("\n❌ Error deleting manual: " + e.getMessage());
+        }
+    }
+
+    private static void excluirManualDE(Scanner scanner) {
+        try (Connection conn = Conexao.conectar()) {
+            System.out.println("\n=== Handbuch löschen ===");
+            System.out.print("Geben Sie den Titel des Handbuchs ein, das Sie löschen möchten: ");
+            String titel = scanner.nextLine();
+
+            System.out.print("\nSind Sie sicher, dass Sie dieses Handbuch löschen möchten? (J/N): ");
+            String bestaetigung = scanner.nextLine();
+
+            if (bestaetigung.equalsIgnoreCase("J")) {
+                String sql = "DELETE FROM manuais WHERE titulo = ?";
+                try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+                    stmt.setString(1, titel);
+                    int betroffeneZeilen = stmt.executeUpdate();
+                    
+                    if (betroffeneZeilen > 0) {
+                        System.out.println("\n✅ Handbuch erfolgreich gelöscht!");
+                    } else {
+                        System.out.println("\n❌ Handbuch nicht gefunden!");
+                    }
+                }
+            } else {
+                System.out.println("\nVorgang abgebrochen.");
+            }
+        } catch (SQLException e) {
+            System.out.println("\n❌ Fehler beim Löschen des Handbuchs: " + e.getMessage());
+        }
+    }
+} 
